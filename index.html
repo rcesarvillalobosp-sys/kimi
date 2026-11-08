@@ -3,1044 +3,530 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kimi · Facturación electrónica SUNAT que funciona sin internet</title>
-<meta name="description" content="Kimi: facturación electrónica SUNAT, punto de venta, caja e inventario que se instalan en la computadora de tu negocio y siguen funcionando aunque se vaya el internet. 14 días gratis, sin tarjeta.">
-<meta name="theme-color" content="#f3eee3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#11141b" media="(prefers-color-scheme: dark)">
+<title>Kimi · Facturación electrónica SUNAT que no se cae</title>
+<meta name="description" content="Emite boletas y facturas SUNAT, cobra con Yape o Plin y controla tu caja e inventario desde tu computadora. Funciona sin internet. 14 días gratis.">
+<meta property="og:title" content="Kimi · La facturación electrónica que no se cae">
+<meta property="og:description" content="Facturas, boletas, punto de venta, caja e inventario en tu computadora. Sigue funcionando aunque se vaya el internet.">
+<meta property="og:image" content="assets/kimi-en-uso-poster.webp">
+<meta name="theme-color" content="#c2410c">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ─────────────────────────────  Tokens: «Papel y sello»  ───────────────────────────── */
 :root {
-  --paper: #f3eee3; --paper-2: #ebe4d5; --surface: #fffdf8; --surface-2: #f8f4ea;
-  --ink: #1a2232; --ink-2: #3a4459; --ink-3: #525b6e;
-  --rule: #d9cfbc; --rule-soft: #e6dece; --ledger: rgba(26,34,50,.07); --margin-line: rgba(194,65,12,.28);
-  --accent: #c2410c; --accent-ink: #a8380a; --accent-hover: #9a3412; --accent-soft: #fbe5d6; --on-accent: #ffffff;
-  --ok: #15803d; --ok-soft: #dcefe1; --warn-soft: #fdf0d5; --warn-ink: #8a4b06;
-  --panel: #1a2232; --on-panel: #f3eee3; --on-panel-2: #c3c9d6; --panel-rule: #2f3a50; --panel-accent: #f97316; --on-panel-accent: #1b1006;
-  --shadow-sm: 0 1px 2px rgba(26,34,50,.07);
-  --shadow: 0 1px 2px rgba(26,34,50,.06), 0 10px 28px -6px rgba(26,34,50,.14);
-  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
-  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .25 0 0 0 0 .14 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  color-scheme: light dark;
+  --bg: #ffffff;
+  --bg-soft: #f7f5f2;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --ink-3: #64748b;
+  --line: #e7e2da;
+  --brand: #c2410c;
+  --brand-dark: #9a3412;
+  --brand-soft: #fff1e8;
+  --ok: #15803d;
+  --ok-soft: #e8f5ec;
+  --night: #111827;
+  --radius: 14px;
+  --shadow-sm: 0 1px 2px rgba(15,23,42,.06), 0 2px 8px rgba(15,23,42,.05);
+  --shadow-lg: 0 2px 6px rgba(15,23,42,.06), 0 24px 60px -12px rgba(15,23,42,.28);
+  --font: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #11141b; --paper-2: #161a23; --surface: #1d222d; --surface-2: #232937;
-    --ink: #efe9dc; --ink-2: #c8c1b3; --ink-3: #a39c8e;
-    --rule: #303746; --rule-soft: #272d3a; --ledger: rgba(239,233,220,.05); --margin-line: rgba(249,115,22,.3);
-    --accent: #f97316; --accent-ink: #fb8a3c; --accent-hover: #fb923c; --accent-soft: #3a2416; --on-accent: #1b1006;
-    --ok: #4ade80; --ok-soft: #15301f; --warn-soft: #3a2a12; --warn-ink: #fbbf5a;
-    --panel: #1d2433; --on-panel: #efe9dc; --on-panel-2: #b9c0cf; --panel-rule: #34405a;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.35);
-    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 30px -8px rgba(0,0,0,.5);
-    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .95 0 0 0 0 .85 0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-}
-
-/* ─────────────────────────────  Base  ───────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 76px; overflow-x: clip; }
-body { margin: 0; background: var(--paper) var(--grain); color: var(--ink); font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; overflow-x: clip; }
-a { color: var(--accent-ink); text-underline-offset: 3px; }
-h1, h2, h3 { font-family: var(--display); line-height: 1.08; letter-spacing: -.02em; margin: 0; font-weight: 700; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 var(--font); -webkit-font-smoothing: antialiased; }
+img, video { display: block; max-width: 100%; height: auto; }
+a { color: var(--brand); }
+h1, h2, h3 { margin: 0; line-height: 1.12; letter-spacing: -.025em; }
 p { margin: 0; }
-img, svg { display: block; }
-.wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
-@media (max-width: 520px) { .wrap { padding: 0 16px; } }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
-[hidden] { display: none !important; }
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
-.eyebrow { display: inline-flex; align-items: center; gap: 10px; font: 500 .82rem/1.3 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-ink); margin: 0 0 18px; }
-.eyebrow::before { content: ""; width: 22px; height: 1.5px; background: currentColor; }
-.mono { font-family: var(--mono); }
+.wrap { width: min(1180px, 100% - 40px); margin-inline: auto; }
+.center { text-align: center; }
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
 
 /* Botones */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 50px; padding: 0 22px; border-radius: 8px;
-  font: 600 1rem/1.2 var(--body); text-decoration: none; border: 1.5px solid transparent; cursor: pointer;
-  transition: background-color .15s, border-color .15s, transform .15s, box-shadow .15s; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 26px; border-radius: 12px;
+  font: 700 1rem var(--font); text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: background .15s, border-color .15s, transform .15s; }
 .btn svg { width: 20px; height: 20px; flex: none; }
-.btn:active { transform: translateY(1px); }
-.btn--primary { background: var(--accent); color: var(--on-accent); box-shadow: 0 2px 0 var(--accent-hover); }
-.btn--primary:hover { background: var(--accent-hover); color: #fff; }
-.btn--ghost { background: var(--surface); color: var(--ink); border-color: var(--rule); box-shadow: var(--shadow-sm); }
-.btn--ghost:hover { border-color: var(--ink); }
-@media (prefers-color-scheme: dark) { .btn--primary:hover { color: var(--on-accent); } }
-.btn small { font: 500 .78rem var(--mono); opacity: .8; }
+.btn--primary { background: var(--brand); color: #fff; box-shadow: 0 6px 18px -6px rgba(194,65,12,.55); }
+.btn--primary:hover { background: var(--brand-dark); transform: translateY(-1px); }
+.btn--ghost { background: #fff; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { border-color: var(--ink-3); transform: translateY(-1px); }
+.btn small { font-weight: 600; opacity: .7; }
 
-/* ─────────────────────────────  Cabecera  ───────────────────────────── */
-.top { position: sticky; top: 0; z-index: 20; background: var(--paper); border-bottom: 1px solid var(--rule); }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 66px; gap: 16px; }
-.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
-.brand img { width: 30px; height: 30px; }
-.wordmark { font: 800 1.6rem/1 var(--display); letter-spacing: -.045em; font-variation-settings: "opsz" 96; }
-.wordmark i { font-style: normal; color: var(--accent); }
-.brand .tag { font: 500 .76rem/1.2 var(--mono); color: var(--ink-3); letter-spacing: .06em; border-left: 1px solid var(--rule); padding-left: 10px; text-transform: uppercase; }
-.top nav { display: flex; gap: 26px; align-items: center; }
-.top nav a:not(.btn) { color: var(--ink-2); text-decoration: none; font-weight: 500; font-size: .95rem; padding: 6px 0; border-bottom: 1.5px solid transparent; }
-.top nav a:not(.btn):hover { color: var(--ink); border-bottom-color: var(--accent); }
-.top nav .btn { min-height: 42px; padding: 0 16px; font-size: .94rem; }
-@media (max-width: 900px) { .top nav a:not(.btn) { display: none; } .brand .tag { display: none; } }
+/* Cabecera */
+.top { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+.top.is-scrolled { border-bottom-color: var(--line); }
+.top .wrap { display: flex; align-items: center; gap: 28px; height: 68px; }
+.logo { display: flex; align-items: center; gap: 9px; text-decoration: none; color: var(--ink); font-weight: 800; font-size: 1.35rem; letter-spacing: -.03em; }
+.logo img { width: 30px; height: 30px; }
+.top nav { display: flex; gap: 26px; margin-left: auto; }
+.top nav a { color: var(--ink-2); text-decoration: none; font-weight: 600; font-size: .95rem; }
+.top nav a:hover { color: var(--ink); }
+.top .btn { min-height: 42px; padding: 0 18px; font-size: .93rem; }
+@media (max-width: 860px) { .top nav { display: none; } .top .btn { margin-left: auto; } }
 
-/* ─────────────────────────────  Portada  ───────────────────────────── */
-.hero { position: relative; padding: 64px 0 88px; overflow: hidden; }
-.hero::before { /* libreta contable detrás del comprobante */
-  content: ""; position: absolute; inset: 0 0 0 54%;
-  background: linear-gradient(90deg, transparent 38px, var(--margin-line) 38px 39.5px, transparent 39.5px),
-              repeating-linear-gradient(180deg, transparent 0 31px, var(--ledger) 31px 32px);
-  -webkit-mask: linear-gradient(90deg, transparent, #000 18%); mask: linear-gradient(90deg, transparent, #000 18%);
-  pointer-events: none; }
-.hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 56px; align-items: center; }
-.hero h1 { font-size: clamp(3.1rem, 8.4vw, 6.9rem); line-height: .93; letter-spacing: -.045em; font-weight: 800; font-variation-settings: "opsz" 96; }
-.hero h1 .line { display: block; }
-.hero h1 .dot { color: var(--accent); }
-.hero .lead { font-size: clamp(1.06rem, 1.6vw, 1.22rem); color: var(--ink-2); margin: 28px 0 34px; max-width: 31em; }
-.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.demo-note { flex-basis: 100%; margin-top: 4px; max-width: 34em; font-size: .93rem; color: var(--ink); background: var(--surface); border: 1px dashed var(--accent);
-  border-radius: 8px; padding: 10px 14px; animation: note-in .25s ease-out; }
-.demo-note:empty { display: none; }
-@keyframes note-in { from { opacity: 0; transform: translateY(-4px); } }
-.facts { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 30px 0 0; padding: 0; list-style: none; color: var(--ink-2); font-size: .93rem; }
-.facts li { display: inline-flex; align-items: center; gap: 8px; }
-.facts svg { width: 16px; height: 16px; color: var(--ok); }
+/* Portada */
+.hero { padding: 64px 0 0; text-align: center; background: linear-gradient(180deg, #fff 0%, #fff 62%, var(--bg-soft) 62%); }
+.pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; background: var(--brand-soft); color: var(--brand-dark);
+  font-weight: 700; font-size: .86rem; }
+.pill b { background: var(--brand); color: #fff; border-radius: 999px; padding: 2px 9px; font-size: .78rem; }
+.hero h1 { font-size: clamp(2.4rem, 6vw, 4.4rem); font-weight: 800; margin: 22px auto 0; max-width: 17ch; text-wrap: balance; }
+.hero h1 span { color: var(--brand); white-space: nowrap; }
+.hero .lead { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--ink-2); max-width: 46rem; margin: 22px auto 0; }
+.cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
+.demo-note { margin: 12px auto 0; max-width: 34rem; font-size: .92rem; color: var(--ink-2); background: var(--bg-soft); border-radius: 10px; padding: 10px 14px; }
+.trust { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 26px; list-style: none; padding: 0; margin: 26px 0 0; color: var(--ink-2); font-size: .93rem; font-weight: 500; }
+.trust li { display: inline-flex; align-items: center; gap: 7px; }
+.trust svg { width: 18px; height: 18px; color: var(--ok); }
 
-/* Comprobante ilustrado */
-.receipt-wrap { position: relative; justify-self: center; width: min(100%, 440px); padding-top: 22px; filter: drop-shadow(0 18px 26px rgba(26,34,50,.16)) drop-shadow(0 2px 2px rgba(26,34,50,.08)); }
-@media (prefers-color-scheme: dark) { .receipt-wrap { filter: drop-shadow(0 18px 30px rgba(0,0,0,.55)); } }
-.receipt { position: relative; background: var(--surface); padding: 38px 30px 30px; transform: rotate(2.2deg);
-  font: 400 .9rem/1.55 var(--mono); color: var(--ink);
-  -webkit-mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / 14px 51% repeat-x,
-                conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x;
-          mask: conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / 14px 51% repeat-x,
-                conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x; }
-.receipt .shop { font-weight: 600; text-align: center; letter-spacing: .02em; }
-.receipt .ruc { text-align: center; color: var(--ink-3); margin-bottom: 14px; }
-.receipt .doc { border: 1.5px solid var(--ink); text-align: center; padding: 7px; margin-bottom: 14px; font-size: .76rem; letter-spacing: .04em; }
-.receipt .doc strong { display: block; font-size: 1rem; font-weight: 600; letter-spacing: .02em; }
-.receipt dl { margin: 0; }
-.receipt dl div { display: flex; justify-content: space-between; gap: 12px; }
-.receipt dt, .receipt dd { margin: 0; }
-.receipt .total { border-top: 1.5px dashed var(--rule); margin-top: 10px; padding-top: 8px; font-weight: 600; font-size: .98rem; }
-.receipt .log { margin-top: 16px; padding-top: 12px; border-top: 1.5px dashed var(--rule); font-size: .76rem; display: grid; gap: 3px; min-height: 66px; }
-.receipt .log span { display: flex; gap: 8px; align-items: center; }
-.receipt .log b { font-weight: 500; color: var(--ink-3); min-width: 38px; }
-.log-slot { display: grid; }
-.log-slot > span { grid-area: 1 / 1; }
-.log-1 { color: var(--accent-ink); }
-.log-2 { color: var(--ok); font-weight: 600; }
-.log-sending { color: var(--ink-2); opacity: 0; }
-.receipt { padding-bottom: 64px; }
-.receipt .log { min-height: 0; }
-.stamp { position: absolute; z-index: 3; right: -22px; bottom: 22px; transform: rotate(-12deg); border: 2.5px solid var(--ok); color: var(--ok);
-  border-radius: 6px; padding: 6px 16px 5px; font: 600 1.3rem/1 var(--mono); letter-spacing: .14em; opacity: .92;
-  box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 3.5px var(--ok); background: color-mix(in srgb, var(--surface) 70%, transparent); }
-.stamp small { display: block; font-size: .56rem; letter-spacing: .2em; margin-top: 3px; text-align: center; }
-.net-pill { position: absolute; z-index: 2; top: 0; left: -10px; transform: rotate(-3deg); display: grid; }
-.net-pill > span { grid-area: 1 / 1; display: inline-flex; align-items: center; gap: 8px; border-radius: 6px; padding: 7px 12px;
-  font: 600 .76rem/1 var(--body); box-shadow: var(--shadow); white-space: nowrap; }
-.net-pill svg { width: 15px; height: 15px; }
-.pill-off { background: var(--ink); color: var(--paper); opacity: 0; }
-.pill-on { background: var(--ok); color: #fff; }
-@media (prefers-color-scheme: dark) { .pill-on { color: #08200f; } }
-.replay { position: absolute; right: -4px; bottom: -34px; background: none; border: 0; color: var(--ink-3); font: 500 .8rem var(--mono); cursor: pointer; padding: 6px; display: inline-flex; gap: 6px; align-items: center; }
-.replay:hover { color: var(--ink); }
-.replay svg { width: 14px; height: 14px; }
+/* Ventana con el video */
+.window { margin: 52px auto 0; max-width: 1080px; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: var(--shadow-lg); border: 1px solid var(--line); text-align: left; }
+.window__bar { display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; background: #f3f1ee; border-bottom: 1px solid var(--line); }
+.window__bar i { width: 11px; height: 11px; border-radius: 50%; }
+.window__bar i:nth-child(1) { background: #ff6058; } .window__bar i:nth-child(2) { background: #ffbd2e; } .window__bar i:nth-child(3) { background: #28c840; }
+.window__url { flex: 1; max-width: 360px; margin: 0 auto; height: 24px; border-radius: 6px; background: #fff; border: 1px solid var(--line); color: var(--ink-3);
+  font-size: .78rem; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 0 8px; overflow: hidden; white-space: nowrap; }
+.window__url svg { width: 12px; height: 12px; flex: none; }
+.window video { width: 100%; aspect-ratio: 1280 / 800; background: #f3eee3; }
+.video-wrap { position: relative; }
+.video-btn { position: absolute; right: 14px; bottom: 14px; width: 42px; height: 42px; border-radius: 50%; border: 0; background: rgba(15,23,42,.72); color: #fff;
+  display: grid; place-items: center; cursor: pointer; }
+.video-btn svg { width: 18px; height: 18px; }
+.caption { margin: 16px 0 0; text-align: center; color: var(--ink-3); font-size: .9rem; }
+.caption b { color: var(--ink-2); }
 
-/* La secuencia: solo corre con .play (sin JS queda el estado final) */
-.play .pill-off { animation: fade-out .35s 2.5s both; }
-.play .pill-on  { animation: fade-in .35s 2.5s both; }
-.play .log-sending { animation: blip 1.1s 2.6s both; }
-.play .log-2 { animation: rise .4s 3.7s both; }
-.play .stamp { animation: stamp-drop .55s 4s cubic-bezier(.2,.9,.3,1.25) both; }
-.play.receipt { animation: thud .3s 4.3s both; }
-@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes blip { 0% { opacity: 0; } 12%, 85% { opacity: 1; } 100% { opacity: 0; } }
-@keyframes rise { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-@keyframes stamp-drop { 0% { opacity: 0; transform: rotate(-4deg) scale(2.3); } 65% { opacity: 1; transform: rotate(-12deg) scale(.94); } 100% { opacity: .9; transform: rotate(-12deg) scale(1); } }
-@keyframes thud { 0%, 100% { transform: rotate(2.2deg); } 40% { transform: rotate(2.2deg) translateY(2px) scale(.995); } }
+/* Franja de ventajas */
+.perks { background: var(--bg-soft); padding: 56px 0 72px; }
+.perks ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.perks li { display: flex; gap: 14px; align-items: flex-start; }
+.perks h3 { font-size: 1.02rem; font-weight: 700; }
+.perks p { font-size: .93rem; color: var(--ink-2); margin-top: 3px; }
+.ico { flex: none; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: #fff; color: var(--brand); box-shadow: var(--shadow-sm); }
+.ico svg { width: 22px; height: 22px; }
+@media (max-width: 960px) { .perks ul { grid-template-columns: 1fr 1fr; gap: 26px; } }
+@media (max-width: 560px) { .perks ul { grid-template-columns: 1fr; } }
 
-/* Tableta: dos columnas desde 720 px */
-@media (min-width: 720px) and (max-width: 900px) {
-  .hero { padding: 48px 0 84px; }
-  .hero .wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 32px; }
-  .hero h1 { font-size: clamp(3.4rem, 9vw, 4.6rem); }
-  .receipt { font-size: .8rem; padding: 32px 22px 58px; }
-  .stamp { right: -12px; font-size: 1.1rem; }
-}
-@media (max-width: 719px) {
-  .hero { padding: 40px 0 80px; }
-  .hero::before { inset: auto 0 0 0; height: 520px; -webkit-mask: linear-gradient(180deg, transparent, #000 30%); mask: linear-gradient(180deg, transparent, #000 30%); }
-  .hero .wrap { grid-template-columns: 1fr; gap: 56px; }
-  .receipt-wrap { width: min(100% - 20px, 360px); }
-  .receipt { font-size: .84rem; padding: 34px 22px 74px; }
-  .stamp { right: -6px; bottom: 8px; font-size: 1.1rem; }
+/* Secciones */
+section { scroll-margin-top: 72px; }
+.section { padding: 104px 0; }
+.section--soft { background: var(--bg-soft); }
+.kicker { color: var(--brand); font-weight: 800; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; }
+.title { font-size: clamp(1.9rem, 4vw, 2.9rem); font-weight: 800; margin-top: 12px; }
+.sub { font-size: 1.12rem; color: var(--ink-2); margin-top: 16px; max-width: 42rem; }
+.center .sub { margin-inline: auto; }
+@media (max-width: 600px) { .section { padding: 72px 0; } }
+
+/* Funciones con capturas reales */
+.feature { display: grid; grid-template-columns: 1fr 1.25fr; gap: 64px; align-items: center; margin-top: 88px; }
+.features-start { margin-top: 64px; }
+.feature--flip { grid-template-columns: 1.25fr 1fr; }
+.feature--flip .feature__text { order: 2; }
+.feature h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); font-weight: 800; margin-top: 12px; }
+.feature p { color: var(--ink-2); margin-top: 14px; font-size: 1.05rem; }
+.checks { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+.checks li { display: flex; gap: 12px; align-items: flex-start; font-weight: 500; }
+.checks svg { flex: none; width: 22px; height: 22px; color: var(--ok); margin-top: 1px; }
+.shot { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); box-shadow: var(--shadow-lg); background: #fff; }
+.shot img { width: 100%; }
+.tag { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 5px 10px; border-radius: 8px; }
+.tag--brand { background: var(--brand-soft); color: var(--brand-dark); }
+.tag--ok { background: var(--ok-soft); color: var(--ok); }
+.offline { margin-top: 24px; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-weight: 700; font-size: .92rem; }
+.state { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 10px; border: 1.5px dashed #d6d0c6; color: var(--ink-2); background: #fff; }
+.state--ok { border: 1.5px solid #9ed3ae; color: var(--ok); background: var(--ok-soft); }
+.state svg { width: 16px; height: 16px; }
+.arrow { color: var(--ink-3); }
+@media (max-width: 900px) {
+  .feature, .feature--flip { grid-template-columns: 1fr; gap: 28px; margin-top: 72px; }
+  .feature--flip .feature__text { order: 0; }
 }
 
-/* ─────────────────────────────  Secciones  ───────────────────────────── */
-.band { padding: 104px 0; border-top: 1px solid var(--rule); }
-.band.alt { background: var(--paper-2) var(--grain); }
-.head { max-width: 44em; margin-bottom: 52px; }
-.head h2 { font-size: clamp(2rem, 4.4vw, 3.3rem); letter-spacing: -.035em; }
-.head p.sub { color: var(--ink-2); margin-top: 16px; font-size: 1.08rem; max-width: 38em; }
-@media (max-width: 700px) { .band { padding: 72px 0; } .head { margin-bottom: 36px; } }
-
-/* Beneficios: uno grande + libro de registro */
-.benefits { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 28px; align-items: stretch; }
-.feature { position: relative; background: var(--panel); color: var(--on-panel); border-radius: 14px; padding: 38px 34px 34px; overflow: hidden; display: flex; flex-direction: column; }
-.feature::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 35px, rgba(255,255,255,.04) 35px 36px); pointer-events: none; }
-.feature .k { font: 500 .8rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--panel-accent); }
-.feature h3 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin: 14px 0 14px; letter-spacing: -.03em; }
-.feature p { color: var(--on-panel-2); max-width: 30em; }
-.states { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 26px 0 0; }
-.states span { font: 500 .8rem/1 var(--mono); padding: 8px 11px; border-radius: 6px; white-space: nowrap; }
-.states .st-off { background: rgba(249,115,22,.16); color: #fdba74; border: 1px solid rgba(249,115,22,.35); }
-.states .st-on { background: rgba(74,222,128,.14); color: #86efac; border: 1px solid rgba(74,222,128,.35); transform: rotate(-2deg); }
-.states svg { width: 18px; height: 18px; color: var(--on-panel-2); }
-.tl-label { position: relative; z-index: 1; margin-top: auto !important; padding-top: 30px; font: 500 .8rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--on-panel-2);
-  border-bottom: 1px dashed var(--panel-rule); padding-bottom: 10px; }
-.timeline { list-style: none; margin: 4px 0 0; padding: 0; position: relative; display: grid; gap: 0; font-size: .93rem; z-index: 1; }
-.timeline li { display: grid; grid-template-columns: 54px 22px 1fr; gap: 10px; align-items: start; padding: 10px 0; }
-.timeline time { font: 500 .85rem/1.5 var(--mono); color: var(--on-panel-2); padding-top: 1px; }
-.timeline .dot { width: 12px; height: 12px; margin: 5px auto 0; border-radius: 50%; border: 2px solid var(--panel-accent); position: relative; }
-.timeline li:not(:last-child) .dot::after { content: ""; position: absolute; left: 50%; top: 12px; width: 1.5px; height: 42px; transform: translateX(-50%); background: var(--panel-rule); }
-.timeline li.ok .dot { background: #4ade80; border-color: #4ade80; }
-.timeline strong { display: block; color: var(--on-panel); font-weight: 600; }
-.timeline span { color: #d5dae4; font-size: .93rem; }
-@media (prefers-color-scheme: dark) { .timeline span { color: var(--on-panel-2); } }
-.timeline li.ok strong { color: #86efac; }
-
-.ledger { background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; margin: 0; padding: 8px 0; list-style: none; box-shadow: var(--shadow-sm);
-  position: relative; }
-.ledger::before { content: ""; position: absolute; top: 0; bottom: 0; left: 70px; width: 1.5px; background: var(--margin-line); }
-.ledger li { display: grid; grid-template-columns: 70px 1fr; align-items: start; padding: 16px 26px 16px 0; border-bottom: 1px solid var(--rule-soft); }
-.ledger li:last-child { border-bottom: 0; }
-.ledger .ic { justify-self: center; width: 26px; height: 26px; color: var(--accent); margin-top: 2px; }
-.ledger h3 { font-size: 1.12rem; letter-spacing: -.01em; margin-bottom: 4px; padding-left: 22px; }
-.ledger p { color: var(--ink-2); font-size: .95rem; padding-left: 22px; }
-@media (max-width: 900px) { .benefits { grid-template-columns: 1fr; } }
-@media (max-width: 520px) {
-  .feature { padding: 30px 22px 26px; }
-  .ledger::before { left: 54px; } .ledger li { grid-template-columns: 54px 1fr; padding-right: 16px; }
-  .ledger h3, .ledger p { padding-left: 16px; }
-}
-
-/* ─────────────────────────────  Cómo se usa (pestañas)  ───────────────────────────── */
-.tabs-shell { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 36px; align-items: start; }
-[role="tablist"] { display: flex; flex-direction: column; gap: 4px; border-left: 1.5px solid var(--rule); }
-[role="tab"] { appearance: none; background: none; border: 0; text-align: left; cursor: pointer; color: var(--ink-2);
-  font: 500 1rem/1.3 var(--body); padding: 12px 14px 12px 18px; margin-left: -1.5px; border-left: 3px solid transparent;
-  display: grid; grid-template-columns: 30px 1fr; align-items: center; gap: 4px; border-radius: 0 8px 8px 0; transition: background-color .15s, color .15s; }
-[role="tab"] .n { font: 500 .8rem var(--mono); color: var(--ink-3); }
-[role="tab"]:hover { color: var(--ink); background: color-mix(in srgb, var(--surface) 60%, transparent); }
-[role="tab"][aria-selected="true"] { color: var(--ink); font-weight: 600; border-left-color: var(--accent); background: var(--surface); box-shadow: var(--shadow-sm); }
-[role="tab"][aria-selected="true"] .n { color: var(--accent-ink); }
-[role="tab"]:focus-visible { outline-offset: -3px; }
-.tab-hint { margin-top: 18px; font: 400 .8rem/1.5 var(--mono); color: var(--ink-3); padding-left: 18px; }
-.tab-hint kbd { font: inherit; border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; background: var(--surface); }
-
-.panel { display: grid; grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr); gap: 36px; align-items: center; background: var(--surface); border: 1px solid var(--rule);
-  border-radius: 16px; padding: 36px; box-shadow: var(--shadow); min-height: 440px; animation: panel-in .3s ease-out; }
-@keyframes panel-in { from { opacity: 0; transform: translateY(6px); } }
-.panel:focus-visible { outline-offset: 4px; }
-.panel h3 { font-size: 1.6rem; letter-spacing: -.025em; }
-.panel .intro { color: var(--ink-2); margin: 10px 0 22px; }
-.how { list-style: none; counter-reset: h; margin: 0; padding: 0; display: grid; gap: 14px; }
-.how li { counter-increment: h; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; font-size: .97rem; color: var(--ink-2); }
-.how li::before { content: counter(h, decimal-leading-zero); font: 600 .8rem/1 var(--mono); color: var(--accent-ink); border: 1.5px solid currentColor; border-radius: 6px;
-  height: 26px; display: grid; place-items: center; margin-top: 1px; }
-.how strong { color: var(--ink); font-weight: 600; }
-.panel-actions { margin-top: 22px; }
-.btn-small { min-height: 40px; padding: 0 14px; font-size: .9rem; }
-
-@media (max-width: 980px) {
-  .tabs-shell { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-  .tabs-shell > * { min-width: 0; }
-  [role="tablist"] { flex-direction: row; overflow-x: auto; border-left: 0; border-bottom: 1.5px solid var(--rule); gap: 2px; scrollbar-width: thin; padding-bottom: 0; }
-  [role="tab"] { flex: none; margin: 0 0 -1.5px; border-left: 0; border-bottom: 3px solid transparent; border-radius: 8px 8px 0 0; padding: 10px 14px; grid-template-columns: auto auto; gap: 8px; white-space: nowrap; }
-  [role="tab"][aria-selected="true"] { border-bottom-color: var(--accent); box-shadow: none; }
-  .tab-hint { display: none; }
-  .panel { grid-template-columns: minmax(0, 1fr); padding: 26px 18px; min-height: 0; }
-}
-/* Tableta: todas las pestañas visibles en dos filas, pasos en dos columnas */
-@media (min-width: 600px) and (max-width: 980px) {
-  [role="tablist"] { flex-wrap: wrap; overflow: visible; border-bottom: 0; gap: 8px; }
-  [role="tab"] { margin: 0; border: 1px solid var(--rule); border-radius: 8px; background: color-mix(in srgb, var(--surface) 50%, transparent); }
-  [role="tab"][aria-selected="true"] { border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); background: var(--surface); }
-  .panel { padding: 30px 28px; }
-  .how { grid-template-columns: 1fr 1fr; gap: 14px 24px; }
-}
-/* Celular: tira desplazable con aviso de que hay más pestañas */
-@media (max-width: 599px) {
-  .tabs-rail { position: relative; }
-  .tabs-rail::after { content: ""; position: absolute; top: 0; right: 0; bottom: 2px; width: 44px; pointer-events: none;
-    background: linear-gradient(90deg, transparent, var(--paper)); transition: opacity .2s; }
-  .tabs-rail.at-end::after { opacity: 0; }
-  [role="tablist"] { scrollbar-width: none; }
-  [role="tablist"]::-webkit-scrollbar { display: none; }
-}
-
-/* Mini pantallas (HTML + CSS, no capturas) */
-.screen { background: var(--surface-2); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; font-size: .8rem; line-height: 1.4; color: var(--ink);
-  box-shadow: 0 1px 0 var(--rule-soft), 0 24px 40px -22px rgba(26,34,50,.35); position: relative; }
-.appbar { display: flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--panel); color: var(--on-panel); font-weight: 500; font-size: .78rem; }
-.appbar .k-logo { width: 20px; height: 20px; border-radius: 4px; background: var(--panel-accent); color: var(--on-panel-accent); display: grid; place-items: center; font: 800 .75rem var(--display); }
-.appbar .where { color: var(--on-panel-2); }
-.appbar .net { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font: 500 .7rem var(--mono); padding: 3px 8px; border-radius: 5px; background: rgba(74,222,128,.15); color: #86efac; white-space: nowrap; }
-.appbar .net::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.appbar .net.off { background: rgba(249,115,22,.18); color: #fdba74; }
-.appbar { white-space: nowrap; }
-@media (max-width: 520px) { .appbar .where { display: none; } }
-.scr-body { padding: 14px; }
-.field { background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; padding: 8px 10px; display: flex; gap: 8px; align-items: center; }
-.field svg { width: 15px; height: 15px; color: var(--ink-3); flex: none; }
-.field .ph { color: var(--ink-3); }
-.lbl { font: 500 .66rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 5px; }
-.caret { display: inline-block; width: 1.5px; height: 1em; background: var(--accent); vertical-align: -2px; animation: caret 1s steps(1) infinite; }
-@keyframes caret { 50% { opacity: 0; } }
-.rows { list-style: none; margin: 8px 0 0; padding: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; overflow: hidden; }
-.rows li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--rule-soft); }
-.rows li:last-child { border-bottom: 0; }
-.rows li.hit { background: var(--accent-soft); font-weight: 500; }
-.rows .num, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.chip { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--rule); background: var(--surface); border-radius: 6px; padding: 5px 9px; font-weight: 500; font-size: .74rem; }
-.chip.sel { border-color: var(--accent); color: var(--accent-ink); box-shadow: inset 0 0 0 1px var(--accent); }
-.mock-btn { display: flex; justify-content: center; align-items: center; gap: 8px; background: var(--accent); color: var(--on-accent); border-radius: 7px; padding: 9px; font-weight: 600; margin-top: 10px; }
-.mock-btn.ink { background: var(--ink); color: var(--paper); }
-.split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 12px; }
-.tk { background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; padding: 10px; font-family: var(--mono); font-size: .74rem; }
-.tk div { display: flex; justify-content: space-between; gap: 8px; }
-.tk .t { border-top: 1px dashed var(--rule); margin-top: 6px; padding-top: 6px; font-weight: 600; font-size: .86rem; }
-.pays { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-.toast { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); background: var(--ink); color: var(--paper); border-radius: 8px; padding: 7px 12px;
-  font-weight: 500; font-size: .76rem; display: flex; align-items: center; gap: 7px; white-space: nowrap; box-shadow: var(--shadow); }
-.toast svg { width: 14px; height: 14px; color: #4ade80; }
-.scr-pos .scr-body { padding-bottom: 54px; }
-@media (max-width: 520px) { .split { grid-template-columns: 1fr; } }
-
-/* Factura */
-.ruc-ok { margin-top: 6px; font-size: .76rem; color: var(--ok); display: flex; gap: 6px; align-items: center; font-weight: 500; }
-.ruc-ok svg { width: 14px; height: 14px; }
-.inv-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: .76rem; background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; overflow: hidden; }
-.inv-table th { text-align: left; font: 500 .64rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); padding: 6px 8px; border-bottom: 1px solid var(--rule); }
-.inv-table td { padding: 6px 8px; border-bottom: 1px solid var(--rule-soft); }
-.inv-table tr:last-child td { border-bottom: 0; }
-.inv-table .r { text-align: right; }
-.totals { margin: 10px 0 0 auto; width: min(100%, 210px); font-family: var(--mono); font-size: .74rem; }
-.totals div { display: flex; justify-content: space-between; }
-.totals .g { font-weight: 600; font-size: .9rem; border-top: 1px dashed var(--rule); margin-top: 4px; padding-top: 4px; }
-.mini-stamp { position: absolute; right: 16px; top: 52px; transform: rotate(-10deg); border: 2px solid var(--ok); color: var(--ok); border-radius: 5px; padding: 4px 10px 3px; font: 600 .8rem/1 var(--mono); letter-spacing: .14em; text-align: center;
-  box-shadow: inset 0 0 0 1.5px var(--surface-2), inset 0 0 0 2.5px var(--ok); background: color-mix(in srgb, var(--surface-2) 70%, transparent); }
-.mini-stamp small { display: block; font-size: .58rem; letter-spacing: .08em; margin-top: 3px; }
-.is-active .mini-stamp { animation: stamp-drop .5s .5s cubic-bezier(.2,.9,.3,1.25) both; }
-
-/* Sin internet */
-.queue { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
-.queue li { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; padding: 8px 10px; }
-.queue .st { font: 500 .68rem var(--mono); padding: 3px 7px; border-radius: 5px; background: var(--warn-soft); color: var(--warn-ink); min-width: 78px; text-align: center; transition: background-color .3s, color .3s; }
-.queue .st .a { display: none; }
-.online .queue .st { background: var(--ok-soft); color: var(--ok); }
-.online .queue .st .p { display: none; } .online .queue .st .a { display: inline; }
-.online .queue li:nth-child(2) .st { transition-delay: .35s; } .online .queue li:nth-child(3) .st { transition-delay: .7s; }
-.offline-bar { display: flex; align-items: center; gap: 10px; border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-weight: 600; font-size: .84rem;
-  background: var(--warn-soft); color: var(--warn-ink); border: 1px solid color-mix(in srgb, var(--warn-ink) 25%, transparent); transition: background-color .3s, color .3s; }
-.offline-bar svg { width: 18px; height: 18px; flex: none; }
-.offline-bar .on-txt, .offline-bar .ic-on { display: none; }
-.online .offline-bar { background: var(--ok-soft); color: var(--ok); border-color: color-mix(in srgb, var(--ok) 30%, transparent); }
-.online .offline-bar .off-txt, .online .offline-bar .ic-off { display: none; }
-.online .offline-bar .on-txt, .online .offline-bar .ic-on { display: inline; }
-.sell-on { margin-top: 12px; font-size: .76rem; color: var(--ink-3); display: flex; justify-content: space-between; gap: 8px; }
-
-/* Cierre de caja */
-.count { display: grid; gap: 4px; font-family: var(--mono); font-size: .76rem; background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; padding: 10px; }
-.count div { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; }
-.count .q { color: var(--ink-3); }
-.balance { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.balance div { background: var(--surface); border: 1px solid var(--rule); border-radius: 7px; padding: 8px 10px; }
-.balance span { display: block; font: 500 .62rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-.balance b { font: 600 .92rem var(--mono); }
-.balance .diff { border-color: var(--accent); background: var(--accent-soft); }
-.balance .diff b { color: var(--accent-ink); }
-.digital { margin-top: 10px; font-size: .74rem; color: var(--ink-3); }
-@media (max-width: 420px) { .balance { grid-template-columns: 1fr 1fr; } .balance .diff { grid-column: 1 / -1; } }
+/* Pareja de capturas */
+.duo { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 88px; }
+.duo article { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 30px 30px 0; overflow: hidden; display: flex; flex-direction: column; }
+.duo h3 { font-size: 1.4rem; font-weight: 800; margin-top: 12px; }
+.duo p { color: var(--ink-2); margin-top: 10px; }
+.duo .shot { margin: 26px -2px 0; border-radius: 12px 12px 0 0; border-bottom: 0; box-shadow: var(--shadow-sm); }
+@media (max-width: 900px) { .duo { grid-template-columns: 1fr; } .duo article { padding: 24px 22px 0; } }
 
 /* Celular */
-.duo { display: grid; grid-template-columns: minmax(0, 1fr) 128px; gap: 14px; align-items: end; padding: 14px; }
-.crumb { font: 500 .7rem var(--mono); color: var(--ink-3); margin-bottom: 8px; }
-.crumb b { color: var(--ink); font-weight: 600; }
-.qr-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 12px; display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; }
-.qr { width: 96px; height: 96px; background: #fff; border-radius: 4px; }
-.qr svg { width: 100%; height: 100%; }
-.qr-card p { font-size: .74rem; color: var(--ink-2); }
-.qr-card .wifi { font: 500 .7rem var(--mono); color: var(--ink); margin-top: 6px; display: block; }
-.phone { width: 128px; height: 220px; border: 5px solid var(--ink); border-radius: 20px; background: var(--paper); position: relative; overflow: hidden; }
-.phone::before { content: ""; position: absolute; top: 5px; left: 50%; width: 32px; height: 5px; border-radius: 3px; background: var(--ink); transform: translateX(-50%); z-index: 2; }
-.phone .p-bar { background: var(--panel); color: var(--on-panel); font: 600 .62rem var(--body); padding: 16px 8px 6px; display: flex; align-items: center; gap: 5px; }
-.phone .p-bar i { width: 12px; height: 12px; border-radius: 3px; background: var(--panel-accent); }
-.phone .p-list { padding: 6px; display: grid; gap: 4px; }
-.phone .p-list span { height: 14px; border-radius: 3px; background: var(--surface); border: 1px solid var(--rule-soft); }
-.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--rule); border-radius: 10px 10px 0 0; padding: 8px; font-size: .62rem; box-shadow: 0 -8px 16px -8px rgba(0,0,0,.2); }
-.sheet b { display: block; font-size: .66rem; margin-bottom: 5px; }
-.sheet .add { display: flex; align-items: center; gap: 5px; background: var(--accent); color: var(--on-accent); border-radius: 5px; padding: 5px 6px; font-weight: 600; }
-.sheet .add svg { width: 11px; height: 11px; }
-.is-active .sheet { animation: sheet-up .5s .8s ease-out both; }
-@keyframes sheet-up { from { transform: translateY(100%); } }
-@media (max-width: 460px) { .duo { grid-template-columns: 1fr; justify-items: center; } .duo > div:first-child { width: 100%; } .qr-card { grid-template-columns: 84px 1fr; } .qr { width: 84px; height: 84px; } }
+.phone-sec { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+.phone { position: relative; width: min(320px, 78vw); margin-inline: auto; padding: 12px; border-radius: 46px; background: #0b0f19; box-shadow: var(--shadow-lg); }
+.phone::before { content: ""; position: absolute; top: 20px; left: 50%; width: 92px; height: 24px; margin-left: -46px; border-radius: 20px; background: #0b0f19; z-index: 1; }
+.phone video { width: 100%; aspect-ratio: 390 / 844; border-radius: 36px; background: #f3eee3; object-fit: cover; }
+.steps-mini { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 16px; counter-reset: s; }
+.steps-mini li { counter-increment: s; display: grid; grid-template-columns: 38px 1fr; gap: 14px; align-items: start; }
+.steps-mini li::before { content: counter(s); width: 38px; height: 38px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-dark); font-weight: 800; display: grid; place-items: center; }
+.steps-mini b { display: block; }
+.steps-mini span { color: var(--ink-2); font-size: .97rem; }
+@media (max-width: 900px) { .phone-sec { grid-template-columns: 1fr; gap: 44px; } }
 
-/* Inventario */
-.alert { display: flex; gap: 8px; align-items: center; background: var(--warn-soft); color: var(--warn-ink); border-radius: 7px; padding: 8px 10px; font-weight: 600; font-size: .76rem; margin-bottom: 10px; }
-.alert svg { width: 15px; height: 15px; flex: none; }
-.low { color: var(--accent-ink); font-weight: 600; }
-.low::after { content: "bajo"; margin-left: 6px; font: 500 .6rem var(--mono); text-transform: uppercase; letter-spacing: .06em; background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
-.purchase { margin-top: 10px; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; background: var(--surface); border: 1px dashed var(--ok); border-radius: 7px; padding: 8px 10px; font-size: .74rem; }
-.purchase svg { width: 18px; height: 18px; color: var(--ok); }
-.purchase b { display: block; font-size: .78rem; }
-.purchase .plus { font: 600 .8rem var(--mono); color: var(--ok); }
+/* Cómo empezar */
+.start { list-style: none; padding: 0; margin: 56px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; counter-reset: st; }
+.start li { counter-increment: st; background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 26px 22px; }
+.start li::before { content: "0" counter(st); display: block; font-weight: 800; color: var(--brand); font-size: .95rem; letter-spacing: .04em; }
+.start h3 { font-size: 1.12rem; font-weight: 800; margin-top: 10px; }
+.start p { color: var(--ink-2); font-size: .95rem; margin-top: 8px; }
+@media (max-width: 960px) { .start { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .start { grid-template-columns: 1fr; } }
 
-/* ─────────────────────────────  Planes  ───────────────────────────── */
-.plans-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 52px; }
-.plans-head .head { margin-bottom: 0; }
-.billing { display: inline-flex; padding: 4px; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); box-shadow: var(--shadow-sm); }
-.billing button { appearance: none; border: 0; background: none; color: var(--ink-2); font: 600 .93rem var(--body); padding: 10px 16px; border-radius: 7px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; }
-.billing button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-.billing .save { font: 500 .68rem var(--mono); background: var(--ok-soft); color: var(--ok); padding: 3px 6px; border-radius: 4px; letter-spacing: .02em; }
-.billing button[aria-pressed="true"] .save { background: #4ade80; color: #0b2414; }
-.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; align-items: start; }
-.plan { position: relative; background: var(--surface); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow-sm); }
-.plan .top-half { padding: 28px 28px 24px; }
-.plan .name { font: 600 .82rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
-.plan .price { display: flex; align-items: baseline; gap: 8px; margin: 14px 0 6px; font: 800 clamp(2.6rem, 4.4vw, 3.4rem)/1 var(--display); letter-spacing: -.04em; font-variation-settings: "opsz" 96; }
-.plan .price .cur { font-size: .45em; font-weight: 700; letter-spacing: 0; align-self: flex-start; margin-top: .35em; }
-.plan .price .per { font: 500 .92rem var(--body); letter-spacing: 0; color: var(--ink-3); }
-.plan .eq { font: 400 .82rem var(--mono); color: var(--ink-3); min-height: 1.3em; }
-.plan .pitch { margin-top: 14px; color: var(--ink-2); font-size: .97rem; }
-/* Perforado tipo talonario */
-.plan .perf { position: relative; height: 0; border-top: 2px dashed var(--rule); margin: 0 18px; }
-.plan .perf::before, .plan .perf::after { content: ""; position: absolute; top: -12px; width: 22px; height: 22px; border-radius: 50%; background: var(--paper-2); border: 1px solid var(--rule); }
-.plan .perf::before { left: -30px; clip-path: inset(0 0 0 50%); }
-.plan .perf::after { right: -30px; clip-path: inset(0 50% 0 0); }
-.plan ul { list-style: none; margin: 0; padding: 22px 28px 28px; display: grid; gap: 10px; }
-.plan li { display: flex; gap: 10px; align-items: baseline; color: var(--ink-2); }
-.plan li b { font: 600 .95rem var(--mono); color: var(--ink); }
-.plan li svg { width: 15px; height: 15px; flex: none; color: var(--ok); transform: translateY(2px); }
-.plan.featured { background: var(--panel); color: var(--on-panel); border-color: var(--panel); box-shadow: var(--shadow); transform: translateY(-18px); }
-.plan.featured .name, .plan.featured .price .per, .plan.featured .eq { color: var(--on-panel-2); }
-.plan.featured .pitch, .plan.featured li { color: var(--on-panel-2); }
-.plan.featured li b { color: var(--on-panel); }
-.plan.featured li svg { color: #4ade80; }
-.plan.featured .perf { border-top-color: var(--panel-rule); }
-.plan.featured .perf::before, .plan.featured .perf::after { border-color: var(--panel); }
-.ribbon { position: absolute; top: 22px; right: 20px; transform: rotate(6deg); border: 2px solid var(--panel-accent); color: var(--panel-accent); font: 600 .66rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; padding: 5px 8px; border-radius: 4px; }
-.plans-note { margin-top: 30px; font-size: .92rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.plans-note span { display: inline-flex; gap: 8px; align-items: center; }
-.plans-note svg { width: 16px; height: 16px; color: var(--ok); }
-@media (max-width: 900px) { .plans { grid-template-columns: repeat(2, minmax(0, 1fr)); } .plan.featured { transform: none; order: -1; grid-column: 1 / -1; }
-  .plan.featured ul { grid-template-columns: repeat(3, auto); justify-content: start; gap: 10px 28px; } }
-@media (max-width: 599px) { .plans { grid-template-columns: 1fr; } .plan.featured ul { grid-template-columns: 1fr; } }
+/* Planes */
+.billing-switch { display: inline-flex; margin-top: 30px; padding: 4px; border-radius: 12px; background: #fff; border: 1px solid var(--line); }
+.billing-switch button { border: 0; background: transparent; font: 700 .95rem var(--font); color: var(--ink-2); padding: 10px 18px; border-radius: 9px; cursor: pointer; }
+.billing-switch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.billing-switch em { font-style: normal; color: var(--ok); font-size: .8rem; margin-left: 6px; }
+.billing-switch button[aria-pressed="true"] em { color: #86efac; }
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 40px; align-items: stretch; text-align: left; }
+.plan { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 32px 28px; display: flex; flex-direction: column; }
+.plan--top { border: 2px solid var(--brand); box-shadow: var(--shadow-lg); position: relative; }
+.plan--top::before { content: "El más elegido"; position: absolute; top: -13px; left: 28px; background: var(--brand); color: #fff; font-size: .78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; }
+.plan h3 { font-size: 1.2rem; font-weight: 800; }
+.plan .for { color: var(--ink-2); font-size: .95rem; margin-top: 6px; min-height: 3em; }
+.price { margin-top: 18px; display: flex; align-items: baseline; gap: 6px; }
+.price b { font-size: 2.6rem; font-weight: 800; letter-spacing: -.03em; }
+.price span { color: var(--ink-2); font-weight: 600; }
+.price-note { color: var(--ink-3); font-size: .86rem; min-height: 1.4em; }
+.plan ul { list-style: none; padding: 0; margin: 22px 0 26px; display: grid; gap: 10px; }
+.plan li { display: flex; gap: 10px; font-size: .97rem; }
+.plan li svg { flex: none; width: 20px; height: 20px; color: var(--ok); margin-top: 2px; }
+.plan .btn { margin-top: auto; }
+.plans-foot { margin-top: 22px; color: var(--ink-3); font-size: .92rem; }
+@media (max-width: 960px) { .plans { grid-template-columns: 1fr; max-width: 460px; margin-inline: auto; } .plan .for { min-height: 0; } }
 
-/* ─────────────────────────────  Descarga  ───────────────────────────── */
-.dl { position: relative; background: var(--panel); color: var(--on-panel); border-radius: 18px; padding: 56px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 48px; overflow: hidden; }
-.dl::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 35px, rgba(255,255,255,.035) 35px 36px); pointer-events: none; }
-.dl > * { position: relative; }
-.dl .eyebrow { color: var(--panel-accent); }
-.dl h2 { font-size: clamp(2rem, 4.2vw, 3.2rem); letter-spacing: -.035em; }
-.dl .sub { color: var(--on-panel-2); margin: 16px 0 28px; font-size: 1.06rem; max-width: 30em; }
-.dl .btn--primary { background: var(--panel-accent); color: var(--on-panel-accent); box-shadow: 0 2px 0 #c2410c; min-height: 56px; font-size: 1.05rem; padding: 0 26px; }
-.dl .btn--primary:hover { background: #fb923c; color: var(--on-panel-accent); }
-.dl .btn--ghost { background: transparent; color: var(--on-panel); border-color: var(--panel-rule); box-shadow: none; }
-.dl .btn--ghost:hover { border-color: var(--on-panel); }
-.dl .demo-note { background: rgba(255,255,255,.06); color: var(--on-panel); border-color: var(--panel-accent); }
-.dl :focus-visible { outline-color: var(--panel-accent); }
-.smart { margin-top: 18px; max-width: 34em; font-size: .86rem; color: var(--on-panel-2); }
-.smart summary { cursor: pointer; display: inline-flex; gap: 8px; align-items: center; list-style: none; padding: 4px 0; text-decoration: underline; text-decoration-color: var(--panel-rule); text-underline-offset: 4px; }
-.smart summary::-webkit-details-marker { display: none; }
-.smart summary svg { width: 15px; height: 15px; flex: none; }
-.smart summary:hover { color: var(--on-panel); }
-.smart p { margin-top: 8px; padding-left: 23px; }
-.smart b { color: var(--on-panel); font-weight: 600; }
+/* Descarga */
+.download { background: var(--night); color: #fff; border-radius: 24px; padding: 64px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; overflow: hidden; position: relative; }
+.download::after { content: ""; position: absolute; right: -120px; top: -120px; width: 380px; height: 380px; border-radius: 50%; background: radial-gradient(circle, rgba(234,88,12,.35), transparent 65%); pointer-events: none; }
+.download__main { position: relative; z-index: 1; }
+.download .kicker { color: #fdba74; }
+.download h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); font-weight: 800; margin-top: 12px; }
+.download p { color: #cbd5e1; margin-top: 14px; font-size: 1.07rem; }
+.download .cta { justify-content: flex-start; }
+.download .btn--ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.3); }
+.download .btn--ghost:hover { border-color: #fff; }
+.specs { position: relative; z-index: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); border-radius: 16px; padding: 26px; }
+.specs dl { margin: 0; display: grid; gap: 12px; }
+.specs div { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px solid rgba(255,255,255,.1); padding-bottom: 12px; font-size: .97rem; }
+.specs div:last-child { border: 0; padding: 0; }
+.specs dt { color: #94a3b8; } .specs dd { margin: 0; font-weight: 700; text-align: right; }
+.smartscreen { margin-top: 18px; font-size: .88rem; color: #94a3b8; }
+.smartscreen summary { cursor: pointer; display: inline; list-style: none; text-decoration: underline; text-underline-offset: 3px; }
+.smartscreen summary::-webkit-details-marker { display: none; }
+.smartscreen p { color: #94a3b8; font-size: .88rem; margin-top: 8px; max-width: 34rem; }
+.smartscreen b { color: #e2e8f0; }
+.download .demo-note { background: rgba(255,255,255,.08); color: #e2e8f0; margin-left: 0; }
+@media (max-width: 960px) { .download { grid-template-columns: 1fr; padding: 40px 24px; } }
 
-.spec { background: var(--surface); color: var(--ink); padding: 26px 24px 30px; font: 400 .86rem/1.5 var(--mono); align-self: start; transform: rotate(-1.2deg);
-  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x, linear-gradient(#000, #000) top / 100% 51% no-repeat;
-          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x, linear-gradient(#000, #000) top / 100% 51% no-repeat; }
-.spec .t { text-align: center; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; font-size: .76rem; padding-bottom: 10px; border-bottom: 1.5px dashed var(--rule); margin-bottom: 10px; }
-.spec dl { margin: 0; display: grid; gap: 6px; }
-.spec dl div { display: flex; justify-content: space-between; gap: 14px; }
-.spec dt { color: var(--ink-3); } .spec dd { margin: 0; text-align: right; font-weight: 500; }
-.spec .mobile { margin-top: 14px; padding-top: 12px; border-top: 1.5px dashed var(--rule); font-family: var(--body); font-size: .9rem; color: var(--ink-2); display: grid; grid-template-columns: 24px 1fr; gap: 10px; }
-.spec .mobile svg { width: 22px; height: 22px; color: var(--accent); }
-.spec .mobile strong { color: var(--ink); }
+/* Preguntas */
+.faq { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: start; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; padding: 22px 0; font-weight: 700; font-size: 1.07rem; display: flex; justify-content: space-between; gap: 20px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; flex: none; width: 22px; height: 22px; margin-top: 2px; background: var(--brand);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 5v14M5 12h14'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { color: var(--ink-2); padding: 0 0 22px; max-width: 40rem; }
+@media (max-width: 900px) { .faq { grid-template-columns: 1fr; gap: 24px; } }
 
-.start { list-style: none; counter-reset: s; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
-.start li { counter-increment: s; padding: 24px 24px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 14px; }
-.start li + li { padding-left: 24px; border-left: 1px solid var(--rule); }
-.start li::before { content: counter(s, decimal-leading-zero); width: 52px; height: 52px; display: grid; place-items: center; transform: rotate(-7deg); margin-top: 2px;
-  font: 600 1.15rem/1 var(--mono); color: var(--accent-ink); border: 2px solid currentColor; border-radius: 8px; box-shadow: inset 0 0 0 3px var(--paper), inset 0 0 0 4.5px currentColor; opacity: .92; }
-.start li:nth-child(2)::before { transform: rotate(4deg); } .start li:nth-child(3)::before { color: var(--ok); transform: rotate(-3deg); }
-.start h3 { font-size: 1.12rem; margin-bottom: 4px; letter-spacing: -.01em; }
-.start p { color: var(--ink-2); font-size: .95rem; }
-@media (max-width: 900px) {
-  .dl { grid-template-columns: 1fr; padding: 40px 24px; gap: 36px; border-radius: 14px; }
-  .spec { transform: none; }
-  .start { grid-template-columns: 1fr; }
-  .start li, .start li + li { padding: 20px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
-}
-@media (max-width: 420px) { .dl { padding: 34px 18px; } .dl .btn { width: 100%; } }
+footer { border-top: 1px solid var(--line); padding: 36px 0 44px; color: var(--ink-3); font-size: .92rem; }
+footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+footer nav { display: flex; gap: 22px; flex-wrap: wrap; }
+footer a { color: var(--ink-2); text-decoration: none; font-weight: 600; }
+footer a:hover { color: var(--ink); }
+[hidden] { display: none !important; }
 
-/* ─────────────────────────────  Preguntas  ───────────────────────────── */
-.faq { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 56px; align-items: start; }
-.faq .head { position: sticky; top: 100px; margin: 0; }
-.help-note { margin-top: 28px; background: var(--surface); padding: 20px 20px 24px; max-width: 340px; transform: rotate(-1deg); box-shadow: var(--shadow-sm);
-  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x, linear-gradient(#000, #000) top / 100% 51% no-repeat;
-          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / 14px 51% repeat-x, linear-gradient(#000, #000) top / 100% 51% no-repeat; }
-.faq .help { color: var(--ink-2); font-size: .95rem; margin-bottom: 14px; }
-.faq .help strong { color: var(--ink); }
-.qa details { border-bottom: 1px solid var(--rule); }
-.qa details:first-child { border-top: 1px solid var(--rule); }
-.qa summary { cursor: pointer; padding: 22px 0; font: 600 1.12rem/1.35 var(--display); letter-spacing: -.01em; list-style: none; display: grid; grid-template-columns: 1fr 30px; gap: 16px; align-items: center; }
-.qa summary::-webkit-details-marker { display: none; }
-.qa summary::after { content: ""; width: 30px; height: 30px; border: 1.5px solid var(--rule); border-radius: 50%;
-  background: linear-gradient(var(--accent), var(--accent)) center / 12px 2px no-repeat, linear-gradient(var(--accent), var(--accent)) center / 2px 12px no-repeat; transition: transform .2s; }
-.qa details[open] summary::after { background: linear-gradient(var(--accent), var(--accent)) center / 12px 2px no-repeat; border-color: var(--accent); }
-.qa summary:hover { color: var(--accent-ink); }
-.qa details p { color: var(--ink-2); padding: 0 46px 24px 0; }
-@media (max-width: 900px) { .faq { grid-template-columns: 1fr; gap: 28px; } .faq .head { position: static; } .qa details p { padding-right: 0; } }
-
-/* ─────────────────────────────  Pie  ───────────────────────────── */
-footer { padding: 48px 0 56px; border-top: 2px dashed var(--rule); color: var(--ink-3); font-size: .9rem; }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 18px 28px; }
-footer .brand .wordmark { font-size: 1.3rem; }
-footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-footer nav a, #contact a { color: var(--ink-2); text-decoration: none; }
-footer nav a:hover, #contact a:hover { color: var(--accent-ink); text-decoration: underline; }
-#contact a { display: inline-flex; gap: 8px; align-items: center; font-weight: 500; }
-#contact svg { width: 16px; height: 16px; color: var(--ok); }
-
-/* ─────────────────────────────  Movimiento reducido  ───────────────────────────── */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
-  html { scroll-behavior: auto; }
-  .replay { display: none; }
-}
+/* Aparición suave */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
 </style>
 </head>
 <body>
-<header class="top">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor" opacity=".14"/><path d="m7.5 12.3 3 3 6-6.3" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m10 8.5 5.5 3.5-5.5 3.5z" fill="currentColor"/></symbol>
+</svg>
+
+<header class="top" id="top">
   <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="Kimi, ir al inicio">
-      <img src="favicon.svg" alt="" width="30" height="30">
-      <span class="wordmark">Kimi<i>.</i></span>
-      <span class="tag">Facturación SUNAT</span>
-    </a>
+    <a class="logo" href="#"><img src="favicon.svg" alt="" width="30" height="30">Kimi</a>
     <nav aria-label="Principal">
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#como-se-usa">Cómo se usa</a>
+      <a href="#funciones">Funciones</a>
+      <a href="#celular">Celular</a>
+      <a href="#empezar">Cómo empezar</a>
       <a href="#planes">Planes</a>
       <a href="#preguntas">Preguntas</a>
-      <a class="btn btn--primary" href="#descargar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
-        Descargar</a>
     </nav>
+    <a class="btn btn--primary" href="#descargar">Descargar gratis</a>
   </div>
 </header>
 
-<main id="inicio">
-  <!-- ═════════════ Portada ═════════════ -->
-  <section class="hero" aria-labelledby="titulo">
+<main>
+  <section class="hero">
     <div class="wrap">
-      <div>
-        <p class="eyebrow">Facturación electrónica SUNAT · para Windows</p>
-        <h1 id="titulo"><span class="line">Tu caja</span> <span class="line">siempre abierta<span class="dot">.</span></span></h1>
-        <p class="lead">Facturas, boletas, punto de venta e inventario que viven en tu computadora y siguen funcionando aunque se vaya el internet.</p>
-        <div class="cta">
-          <a class="btn btn--primary" data-download href="#descargar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
-            Descargar para Windows</a>
-          <a class="btn btn--ghost" data-demo href="#descargar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-            Probar la demo · 20 minutos</a>
-          <p class="demo-note" aria-live="polite"></p>
-        </div>
-        <ul class="facts">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>14 días gratis</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Sin tarjeta</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Facturas, boletas y notas</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Celulares por WiFi</li>
-        </ul>
+      <span class="pill"><b>SUNAT</b> Facturación electrónica para Windows</span>
+      <h1>La facturación electrónica <span>que no se cae</span></h1>
+      <p class="lead">Emite boletas y facturas, cobra con Yape o Plin y controla tu caja desde tu computadora.
+        Si se va el internet sigues vendiendo: Kimi envía todo a SUNAT cuando vuelve la señal.</p>
+      <div class="cta">
+        <a class="btn btn--primary" data-download href="#descargar"><svg><use href="#i-down"/></svg>Descargar para Windows</a>
+        <a class="btn btn--ghost" data-demo href="#"><svg><use href="#i-play"/></svg>Probar la demo <small>· 20 minutos</small></a>
       </div>
+      <p class="demo-note" data-demo-note hidden role="status">La demo en línea se habilita muy pronto. Mientras tanto, descarga Kimi y pruébalo 14 días gratis con tu negocio.</p>
+      <ul class="trust">
+        <li><svg><use href="#i-check"/></svg>14 días gratis</li>
+        <li><svg><use href="#i-check"/></svg>Sin tarjeta</li>
+        <li><svg><use href="#i-check"/></svg>Tus datos se quedan en tu computadora</li>
+      </ul>
 
-      <figure class="receipt-wrap" style="margin:0">
-        <figcaption class="sr-only">Ejemplo: una boleta emitida sin señal a las 10:42 que Kimi envió sola a SUNAT a las 10:58, cuando volvió el internet. SUNAT la aceptó.</figcaption>
-        <div class="net-pill" aria-hidden="true">
-          <span class="pill-off"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></svg>Sin señal · 1 por enviar</span>
-          <span class="pill-on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0M12 20h.01"/></svg>En línea · todo enviado</span>
+      <div class="window">
+        <div class="window__bar" aria-hidden="true">
+          <i></i><i></i><i></i>
+          <div class="window__url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Kimi · Ferretería El Progreso</div>
         </div>
-        <div class="receipt" id="hero-receipt" aria-hidden="true">
-          <p class="shop">BODEGA SANTA ROSA E.I.R.L.</p>
-          <p class="ruc">RUC 20601234567 · Av. Grau 418, Lima</p>
-          <div class="doc">BOLETA DE VENTA ELECTRÓNICA<strong>B001-000482</strong></div>
-          <dl>
-            <div><dt>2 × Arroz Costeño 5 kg</dt><dd>52.00</dd></div>
-            <div><dt>6 × Leche Gloria 400 g</dt><dd>27.60</dd></div>
-            <div><dt>1 × Aceite Primor 1 L</dt><dd>11.90</dd></div>
-          </dl>
-          <dl class="total"><div><dt>TOTAL</dt><dd>S/ 91.50</dd></div></dl>
-          <div class="log">
-            <span class="log-1"><b>10:42</b>Emitida sin señal</span>
-            <div class="log-slot">
-              <span class="log-sending"><b>10:58</b>Enviando a SUNAT…</span>
-              <span class="log-2"><b>10:58</b>Enviado a SUNAT ✓</span>
-            </div>
-          </div>
+        <div class="video-wrap">
+          <video id="hero-video" src="assets/kimi-en-uso.mp4" poster="assets/kimi-en-uso-poster.webp" width="1280" height="800"
+            autoplay muted loop playsinline preload="auto"
+            aria-label="Grabación real de Kimi: ingreso, venta en el punto de venta cobrada con Yape, comprobantes aceptados por SUNAT, inventario y caja"></video>
+          <button class="video-btn" type="button" data-video-toggle="hero-video" aria-label="Pausar el video">
+            <svg viewBox="0 0 24 24" fill="currentColor" data-icon-pause><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" data-icon-play hidden><path d="M7 5l12 7-12 7z"/></svg>
+          </button>
         </div>
-        <span class="stamp" aria-hidden="true">ACEPTADO<small>SUNAT</small></span>
-        <button class="replay" type="button" id="replay" hidden>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
-          Ver otra vez</button>
-      </figure>
+      </div>
+      <p class="caption"><b>Grabación real de Kimi</b>, sin cortes: una venta con Yape, comprobantes aceptados, inventario y caja.</p>
     </div>
   </section>
 
-  <!-- ═════════════ Cómo funciona ═════════════ -->
-  <section class="band alt" id="como-funciona" aria-labelledby="h-funciona">
+  <div class="perks">
     <div class="wrap">
-      <div class="head">
-        <p class="eyebrow">Cómo funciona</p>
-        <h2 id="h-funciona">Todo en tu computadora. Nada depende de un servidor ajeno.</h2>
-        <p class="sub">Kimi se instala en la PC del negocio. Si se cae el internet, tú sigues vendiendo; si vuelve, Kimi se pone al día con SUNAT sin que hagas nada.</p>
-      </div>
-
-      <div class="benefits">
-        <article class="feature">
-          <p class="k">Lo que nos hace distintos</p>
-          <h3>Funciona sin internet</h3>
-          <p>Vende y emite igual. Los comprobantes quedan firmados y se envían solos a SUNAT cuando vuelve la conexión, dentro del plazo que da SUNAT.</p>
-          <p class="states" aria-hidden="true">
-            <span class="st-off">Sin conexión · 3 por enviar</span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m-5-5 5 5-5 5"/></svg>
-            <span class="st-on">Enviado a SUNAT ✓</span>
-          </p>
-          <p class="tl-label">Un martes cualquiera, con el internet caído</p>
-          <ol class="timeline" aria-label="Un día con el internet caído">
-            <li><time>10:42</time><span class="dot" aria-hidden="true"></span><div><strong>Se cae el internet</strong><span>Sigues cobrando y emitiendo boletas.</span></div></li>
-            <li><time>10:43</time><span class="dot" aria-hidden="true"></span><div><strong>3 comprobantes por enviar</strong><span>Firmados y guardados en tu PC. Nada se pierde.</span></div></li>
-            <li class="ok"><time>10:58</time><span class="dot" aria-hidden="true"></span><div><strong>Enviado a SUNAT ✓</strong><span>Volvió la señal y se enviaron solos.</span></div></li>
-          </ol>
-        </article>
-
-        <ul class="ledger">
-          <li>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="M10 10.5 11.5 12 14 9"/></svg>
-            <div><h3>Tus datos son tuyos</h3><p>Clientes, ventas, certificado digital y clave SOL se guardan cifrados en tu computadora. Nadie más los ve.</p></div>
-          </li>
-          <li>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
-            <div><h3>Celulares y tabletas</h3><p>Tus vendedores usan Kimi desde Android o iPhone por el WiFi del local. Escanean un código QR y listo, sin instalar nada.</p></div>
-          </li>
-          <li>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg>
-            <div><h3>Facturación SUNAT completa</h3><p>Facturas, boletas, notas de crédito y débito, resúmenes diarios, bajas, detracciones y ventas al crédito.</p></div>
-          </li>
-          <li>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg>
-            <div><h3>Punto de venta y caja</h3><p>Venta rápida con lector de códigos, ticket de 80 mm, apertura y cierre de caja. Efectivo, Yape y Plin.</p></div>
-          </li>
-          <li>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>
-            <div><h3>Inventario</h3><p>Stock por almacén y por local, con aviso cuando un producto está por acabarse.</p></div>
-          </li>
-          <li>
-            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11M13 13h4M13 16h3"/></svg>
-            <div><h3>Compras y cobranzas</h3><p>Compras a proveedores, cuentas por cobrar y por pagar, usuarios con permisos y registro de actividad.</p></div>
-          </li>
-        </ul>
-      </div>
+      <ul>
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>
+          <div><h3>Comprobantes SUNAT</h3><p>Facturas, boletas, notas y resúmenes, firmados y enviados.</p></div></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg></span>
+          <div><h3>Sin internet, sin problema</h3><p>Vendes igual y se envía solo cuando vuelve la señal.</p></div></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></span>
+          <div><h3>Desde tu celular</h3><p>Tus vendedores la usan por el WiFi del local, sin instalar nada.</p></div></li>
+        <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+          <div><h3>Tus datos son tuyos</h3><p>Todo se guarda cifrado en tu computadora, no en la nube.</p></div></li>
+      </ul>
     </div>
-  </section>
+  </div>
 
-  <!-- ═════════════ Cómo se usa ═════════════ -->
-  <section class="band" id="como-se-usa" aria-labelledby="h-usa">
+  <section class="section" id="funciones">
     <div class="wrap">
-      <div class="head">
-        <p class="eyebrow">Cómo se usa</p>
-        <h2 id="h-usa">Así se ve un día con Kimi</h2>
-        <p class="sub">Elige una tarea y mira, paso a paso, cómo se hace. Sin manuales: si sabes usar un celular, sabes usar Kimi.</p>
+      <div class="center">
+        <p class="kicker">Funciones</p>
+        <h2 class="title">Todo lo que tu negocio necesita, en una sola app</h2>
+        <p class="sub">Así se ve Kimi de verdad: estas pantallas son de una ferretería de ejemplo trabajando con la app.</p>
       </div>
 
-      <div class="tabs-shell">
-        <div>
-          <div class="tabs-rail" id="tabs-rail">
-          <div role="tablist" aria-label="Tareas de Kimi" aria-orientation="vertical" id="tablist">
-            <button role="tab" id="t-vender" aria-controls="p-vender" aria-selected="true" tabindex="0"><span class="n">01</span>Vender en caja</button>
-            <button role="tab" id="t-factura" aria-controls="p-factura" aria-selected="false" tabindex="-1"><span class="n">02</span>Emitir una factura</button>
-            <button role="tab" id="t-offline" aria-controls="p-offline" aria-selected="false" tabindex="-1"><span class="n">03</span>Sin internet</button>
-            <button role="tab" id="t-cierre" aria-controls="p-cierre" aria-selected="false" tabindex="-1"><span class="n">04</span>Cerrar la caja</button>
-            <button role="tab" id="t-celular" aria-controls="p-celular" aria-selected="false" tabindex="-1"><span class="n">05</span>Desde el celular</button>
-            <button role="tab" id="t-inventario" aria-controls="p-inventario" aria-selected="false" tabindex="-1"><span class="n">06</span>Inventario y compras</button>
-          </div>
-          </div>
-          <p class="tab-hint">Usa <kbd>↑</kbd> <kbd>↓</kbd> para cambiar de tarea.</p>
-        </div>
-
-        <div>
-          <!-- 01 Vender -->
-          <div class="panel is-active" role="tabpanel" id="p-vender" aria-labelledby="t-vender" tabindex="0">
-            <div>
-              <h3>Vender en caja</h3>
-              <p class="intro">Una venta completa en menos de un minuto.</p>
-              <ol class="how">
-                <li><span><strong>Busca o escanea</strong> el producto: escribe parte del nombre o pásalo por el lector.</span></li>
-                <li><span><strong>Revisa el carrito.</strong> Cambia cantidades con un toque.</span></li>
-                <li><span><strong>Cobra en efectivo, Yape o Plin.</strong> Kimi calcula el vuelto.</span></li>
-                <li><span><strong>Imprime el ticket</strong> o envíalo por WhatsApp al cliente.</span></li>
-              </ol>
-            </div>
-            <div class="screen scr-pos" role="img" aria-label="Pantalla de venta: búsqueda «leche glo», el carrito suma S/ 91.50, pago con Yape seleccionado y aviso de ticket enviado por WhatsApp.">
-              <div class="appbar"><span class="k-logo">K</span>Caja 1 <span class="where">· Punto de venta</span><span class="net">En línea</span></div>
-              <div class="scr-body split">
-                <div>
-                  <p class="lbl">Producto</p>
-                  <div class="field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>leche glo<span class="caret"></span></span></div>
-                  <ul class="rows">
-                    <li class="hit"><span>Leche Gloria 400 g</span><span class="num">4.60</span></li>
-                    <li><span>Leche Gloria Light</span><span class="num">4.90</span></li>
-                    <li><span>Leche Ideal 395 g</span><span class="num">4.40</span></li>
-                  </ul>
-                </div>
-                <div>
-                  <p class="lbl">Carrito</p>
-                  <div class="tk">
-                    <div><span>2 Arroz 5 kg</span><span>52.00</span></div>
-                    <div><span>6 Leche Gloria</span><span>27.60</span></div>
-                    <div><span>1 Aceite 1 L</span><span>11.90</span></div>
-                    <div class="t"><span>Total</span><span>S/ 91.50</span></div>
-                  </div>
-                  <div class="pays"><span class="chip">Efectivo</span><span class="chip sel">Yape</span><span class="chip">Plin</span></div>
-                  <div class="mock-btn">Cobrar S/ 91.50</div>
-                </div>
-              </div>
-              <div class="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>Ticket enviado por WhatsApp</div>
-            </div>
-          </div>
-
-          <!-- 02 Factura -->
-          <div class="panel" role="tabpanel" id="p-factura" aria-labelledby="t-factura" tabindex="0" hidden>
-            <div>
-              <h3>Emitir una factura</h3>
-              <p class="intro">Con el RUC basta: Kimi completa lo demás.</p>
-              <ol class="how">
-                <li><span><strong>Escribe el RUC</strong> del cliente. Kimi trae la razón social y la dirección.</span></li>
-                <li><span><strong>Agrega productos</strong> o servicios. El IGV se calcula solo.</span></li>
-                <li><span><strong>Pulsa «Emitir».</strong> La factura se firma y se envía a SUNAT.</span></li>
-                <li><span><strong>Ves el sello «Aceptado»</strong> y la imprimes o la envías en PDF.</span></li>
-              </ol>
-            </div>
-            <div class="screen" role="img" aria-label="Pantalla de factura F001-000127 para Distribuidora Los Andes, total S/ 300.00, con el sello Aceptado por SUNAT.">
-              <div class="appbar"><span class="k-logo">K</span>Nueva factura <span class="where">· F001-000127</span><span class="net">En línea</span></div>
-              <div class="scr-body">
-                <p class="lbl">Cliente (RUC)</p>
-                <div class="field" style="max-width:240px"><span class="num">20512345678</span></div>
-                <p class="ruc-ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>DISTRIBUIDORA LOS ANDES S.A.C. · Activo, habido</p>
-                <table class="inv-table">
-                  <thead><tr><th>Cant.</th><th>Descripción</th><th class="r">Importe</th></tr></thead>
-                  <tbody>
-                    <tr><td class="num">4</td><td>Cemento Sol 42.5 kg</td><td class="r num">130.00</td></tr>
-                    <tr><td class="num">10</td><td>Fierro corrugado 1/2"</td><td class="r num">170.00</td></tr>
-                  </tbody>
-                </table>
-                <div class="totals">
-                  <div><span>Op. gravada</span><span>254.24</span></div>
-                  <div><span>IGV 18 %</span><span>45.76</span></div>
-                  <div class="g"><span>Total</span><span>S/ 300.00</span></div>
-                </div>
-                <div class="mock-btn ink">Emitir factura</div>
-              </div>
-              <span class="mini-stamp">ACEPTADO<small>SUNAT · 11:05</small></span>
-            </div>
-          </div>
-
-          <!-- 03 Sin internet -->
-          <div class="panel" role="tabpanel" id="p-offline" aria-labelledby="t-offline" tabindex="0" hidden>
-            <div>
-              <h3>Sin internet</h3>
-              <p class="intro">Lo que pasa cuando se va la señal. Spoiler: nada grave.</p>
-              <ol class="how">
-                <li><span><strong>Se cae el internet</strong> y sigues vendiendo y emitiendo igual.</span></li>
-                <li><span><strong>Arriba ves «Sin conexión · 3 por enviar».</strong> Están firmados y guardados.</span></li>
-                <li><span><strong>Vuelve la señal</strong> y se envían solos, uno por uno.</span></li>
-                <li><span><strong>Aparece «Enviado a SUNAT ✓».</strong> Tú no tuviste que hacer nada.</span></li>
-              </ol>
-              <div class="panel-actions">
-                <button class="btn btn--ghost btn-small" type="button" id="net-toggle" aria-controls="offline-screen">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0M12 20h.01"/></svg>
-                  <span id="net-toggle-label">Simular: vuelve la señal</span></button>
-              </div>
-            </div>
-            <figure class="screen" id="offline-screen" style="margin:0">
-              <figcaption class="sr-only">Pantalla de comprobantes pendientes. Estado actual: <span id="offline-status">Sin conexión, 3 por enviar</span>.</figcaption>
-              <div aria-hidden="true">
-                <div class="appbar"><span class="k-logo">K</span>Comprobantes <span class="where">· hoy</span><span class="net off" id="offline-net">Sin conexión</span></div>
-                <div class="scr-body">
-                  <div class="offline-bar">
-                    <svg class="ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0M12 20h.01M3 3l18 18"/></svg>
-                    <svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>
-                    <span class="off-txt">Sin conexión · 3 por enviar</span><span class="on-txt">Enviado a SUNAT ✓</span>
-                  </div>
-                  <ul class="queue">
-                    <li><span>Boleta <span class="num">B001-000483</span></span><span class="num">12.50</span><span class="st"><span class="p">Por enviar</span><span class="a">Aceptado</span></span></li>
-                    <li><span>Boleta <span class="num">B001-000484</span></span><span class="num">38.00</span><span class="st"><span class="p">Por enviar</span><span class="a">Aceptado</span></span></li>
-                    <li><span>Factura <span class="num">F001-000128</span></span><span class="num">215.40</span><span class="st"><span class="p">Por enviar</span><span class="a">Aceptado</span></span></li>
-                  </ul>
-                  <p class="sell-on"><span>La caja sigue abierta</span><span class="num">Plazo SUNAT: al día</span></p>
-                </div>
-              </div>
-            </figure>
-          </div>
-
-          <!-- 04 Cierre -->
-          <div class="panel" role="tabpanel" id="p-cierre" aria-labelledby="t-cierre" tabindex="0" hidden>
-            <div>
-              <h3>Cerrar la caja</h3>
-              <p class="intro">Cuadrar al final del día, sin calculadora ni cuaderno.</p>
-              <ol class="how">
-                <li><span><strong>Abre «Cerrar caja»</strong> al final del turno.</span></li>
-                <li><span><strong>Cuenta billetes y monedas.</strong> Kimi suma por ti.</span></li>
-                <li><span><strong>Compara con lo esperado</strong> según las ventas del día.</span></li>
-                <li><span><strong>Ves la diferencia</strong>, sobrante o faltante, y queda registrada.</span></li>
-              </ol>
-            </div>
-            <div class="screen" role="img" aria-label="Cierre de caja: contado S/ 1 238.50, esperado S/ 1 240.50, diferencia de 2 soles faltantes.">
-              <div class="appbar"><span class="k-logo">K</span>Cerrar caja <span class="where">· Caja 1 · 21:30</span><span class="net">En línea</span></div>
-              <div class="scr-body">
-                <p class="lbl">Conteo de efectivo</p>
-                <div class="count">
-                  <div><span>Billetes S/ 100</span><span class="q">× 8</span><span>800.00</span></div>
-                  <div><span>Billetes S/ 50</span><span class="q">× 6</span><span>300.00</span></div>
-                  <div><span>Billetes S/ 20</span><span class="q">× 5</span><span>100.00</span></div>
-                  <div><span>Monedas</span><span class="q">—</span><span>38.50</span></div>
-                </div>
-                <div class="balance">
-                  <div><span>Contado</span><b>1 238.50</b></div>
-                  <div><span>Esperado</span><b>1 240.50</b></div>
-                  <div class="diff"><span>Diferencia</span><b>− 2.00</b></div>
-                </div>
-                <p class="digital">Yape S/ 412.00 · Plin S/ 96.00 · ya registrados, no se cuentan.</p>
-                <div class="mock-btn ink">Cerrar caja y guardar</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 05 Celular -->
-          <div class="panel" role="tabpanel" id="p-celular" aria-labelledby="t-celular" tabindex="0" hidden>
-            <div>
-              <h3>Desde el celular</h3>
-              <p class="intro">Tus vendedores usan Kimi en su celular, sin descargar nada.</p>
-              <ol class="how">
-                <li><span>En la computadora, entra a <strong>Mi cuenta → Usar desde el celular</strong>.</span></li>
-                <li><span><strong>Conecta el celular al mismo WiFi</strong> del local.</span></li>
-                <li><span><strong>Escanea el código QR</strong> con la cámara.</span></li>
-                <li><span><strong>Agrégalo a la pantalla de inicio</strong>: queda como una app más.</span></li>
-              </ol>
-            </div>
-            <div class="screen" role="img" aria-label="En la computadora, la pantalla Usar desde el celular muestra un código QR y el nombre del WiFi; al lado, un celular ofrece agregar Kimi a la pantalla de inicio.">
-              <div class="appbar"><span class="k-logo">K</span>Mi cuenta <span class="where">· Usar desde el celular</span></div>
-              <div class="duo">
-                <div>
-                  <p class="crumb">Mi cuenta → <b>Usar desde el celular</b></p>
-                  <div class="qr-card">
-                    <div class="qr" id="qr"></div>
-                    <p>Escanea con la cámara del celular.<span class="wifi">WiFi: Bodega_SantaRosa</span><span class="wifi">192.168.1.20</span></p>
-                  </div>
-                </div>
-                <div class="phone">
-                  <div class="p-bar"><i></i>Kimi · Caja 2</div>
-                  <div class="p-list"><span></span><span></span><span></span><span></span></div>
-                  <div class="sheet"><b>¿Agregar a inicio?</b><span class="add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Pantalla de inicio</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- 06 Inventario -->
-          <div class="panel" role="tabpanel" id="p-inventario" aria-labelledby="t-inventario" tabindex="0" hidden>
-            <div>
-              <h3>Inventario y compras</h3>
-              <p class="intro">Sabes qué tienes, dónde está y qué te falta comprar.</p>
-              <ol class="how">
-                <li><span><strong>Mira el stock</strong> de cada producto por almacén o por local.</span></li>
-                <li><span><strong>Recibe un aviso</strong> cuando algo está por acabarse.</span></li>
-                <li><span><strong>Registra la compra</strong> al proveedor y el stock sube solo.</span></li>
-              </ol>
-            </div>
-            <div class="screen" role="img" aria-label="Inventario por almacén con aviso de 2 productos con stock bajo, y una compra registrada de 24 aceites a Distribuidora Los Andes.">
-              <div class="appbar"><span class="k-logo">K</span>Inventario <span class="where">· 2 almacenes</span><span class="net">En línea</span></div>
-              <div class="scr-body">
-                <div class="alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg>2 productos con stock bajo</div>
-                <table class="inv-table" style="margin-top:0">
-                  <thead><tr><th>Producto</th><th class="r">Principal</th><th class="r">Tienda 2</th></tr></thead>
-                  <tbody>
-                    <tr><td>Arroz Costeño 5 kg</td><td class="r num">48</td><td class="r num">12</td></tr>
-                    <tr><td>Aceite Primor 1 L</td><td class="r num"><span class="low">6</span></td><td class="r num"><span class="low">3</span></td></tr>
-                    <tr><td>Azúcar rubia 1 kg</td><td class="r num">120</td><td class="r num">40</td></tr>
-                  </tbody>
-                </table>
-                <div class="purchase">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>
-                  <span><b>Compra registrada</b>Distribuidora Los Andes · F002-8841</span>
-                  <span class="plus">+24 Aceite</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ═════════════ Planes ═════════════ -->
-  <section class="band alt" id="planes" aria-labelledby="h-planes">
-    <div class="wrap">
-      <div class="plans-head">
-        <div class="head">
-          <p class="eyebrow">Planes</p>
-          <h2 id="h-planes">Precios claros, en soles</h2>
-          <p class="sub">Paga mes a mes o una vez al año. El pago anual trae 2 meses gratis.</p>
-        </div>
-        <div class="billing" role="group" aria-label="Forma de pago">
-          <button type="button" data-cycle="m" aria-pressed="true">Mensual</button>
-          <button type="button" data-cycle="y" aria-pressed="false">Anual <span class="save">2 meses gratis</span></button>
-        </div>
-      </div>
-
-      <div class="plans">
-        <article class="plan" data-m="49">
-          <div class="top-half">
-            <h3 class="name">Básico</h3>
-            <p class="price"><span class="cur">S/</span><span class="amt">49</span><span class="per">al mes</span></p>
-            <p class="eq"></p>
-            <p class="pitch">Para empezar: un local.</p>
-          </div>
-          <div class="perf" aria-hidden="true"></div>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>500</b> comprobantes al mes</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>2</b> usuarios</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>1</b> establecimiento</span></li>
+      <div class="feature features-start reveal">
+        <div class="feature__text">
+          <span class="tag tag--brand">Punto de venta</span>
+          <h3>Vende en segundos, cobra como prefiera tu cliente</h3>
+          <p>Escribe o escanea el producto, ajusta la cantidad y cobra. El IGV se calcula solo.</p>
+          <ul class="checks">
+            <li><svg><use href="#i-check"/></svg>Lector de código de barras y búsqueda por nombre</li>
+            <li><svg><use href="#i-check"/></svg>Efectivo, Yape, Plin, tarjeta o transferencia, con vuelto</li>
+            <li><svg><use href="#i-check"/></svg>Ticket de 80 mm o envío por WhatsApp</li>
           </ul>
-        </article>
-        <article class="plan featured" data-m="99">
-          <span class="ribbon">El más elegido</span>
-          <div class="top-half">
-            <h3 class="name">Profesional</h3>
-            <p class="price"><span class="cur">S/</span><span class="amt">99</span><span class="per">al mes</span></p>
-            <p class="eq"></p>
-            <p class="pitch">Para negocios en crecimiento con caja e inventario.</p>
-          </div>
-          <div class="perf" aria-hidden="true"></div>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>3 000</b> comprobantes al mes</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>5</b> usuarios</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>2</b> establecimientos</span></li>
+        </div>
+        <div class="shot"><img src="assets/punto-de-venta.webp" width="1600" height="867" loading="lazy"
+          alt="Pantalla del punto de venta de Kimi con cemento, fierro, pintura y clavos en la venta, total S/ 231.80 y pago con Yape"></div>
+      </div>
+
+      <div class="feature feature--flip reveal">
+        <div class="feature__text">
+          <span class="tag tag--ok">Aceptado por SUNAT</span>
+          <h3>Facturas y boletas válidas, sin trámites</h3>
+          <p>Elige al cliente por su RUC o DNI, agrega los productos y emite. Ves al instante la respuesta de SUNAT.</p>
+          <ul class="checks">
+            <li><svg><use href="#i-check"/></svg>Facturas, boletas, notas de crédito y débito</li>
+            <li><svg><use href="#i-check"/></svg>Ventas al crédito con cuotas, detracciones y bajas</li>
+            <li><svg><use href="#i-check"/></svg>PDF, XML y constancia de SUNAT (CDR) guardados</li>
           </ul>
-        </article>
-        <article class="plan" data-m="199">
-          <div class="top-half">
-            <h3 class="name">Empresarial</h3>
-            <p class="price"><span class="cur">S/</span><span class="amt">199</span><span class="per">al mes</span></p>
-            <p class="eq"></p>
-            <p class="pitch">Varias sucursales, sin límite.</p>
+        </div>
+        <div class="shot"><img src="assets/factura-aceptada.webp" width="1600" height="1216" loading="lazy"
+          alt="Factura F001-2 de Kimi con el sello Aceptado, detalle de productos, IGV y total S/ 859.00"></div>
+      </div>
+
+      <div class="feature reveal">
+        <div class="feature__text">
+          <span class="tag tag--brand">Funciona sin internet</span>
+          <h3>¿Se fue la señal? Tú sigues vendiendo</h3>
+          <p>Kimi firma cada comprobante en tu computadora y lo deja listo. Cuando vuelve el internet, lo envía a SUNAT por su cuenta, dentro del plazo. Si alguno está por vencer, te avisa.</p>
+          <div class="offline" aria-label="Estados de un comprobante">
+            <span class="state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0M8.5 16.4a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg>Firmado, por enviar</span>
+            <span class="arrow" aria-hidden="true">→</span>
+            <span class="state state--ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Aceptado por SUNAT</span>
           </div>
-          <div class="perf" aria-hidden="true"></div>
-          <ul>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span>Comprobantes <b>ilimitados</b></span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>20</b> usuarios</span></li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg><span><b>10</b> establecimientos</span></li>
-          </ul>
+        </div>
+        <div class="shot"><img src="assets/comprobantes.webp" width="1600" height="1216" loading="lazy"
+          alt="Lista de comprobantes de Kimi, todos con el estado Aceptado"></div>
+      </div>
+
+      <div class="duo">
+        <article class="reveal">
+          <span class="tag tag--brand">Caja</span>
+          <h3>Abre y cierra la caja sin descuadres</h3>
+          <p>Fondo inicial, ventas por medio de pago, ingresos y egresos. Al cerrar, Kimi te dice cuánto efectivo debe haber.</p>
+          <div class="shot"><img src="assets/caja.webp" width="1600" height="1120" loading="lazy"
+            alt="Pantalla de caja de Kimi con fondo inicial S/ 200, ventas del turno y efectivo esperado"></div>
+        </article>
+        <article class="reveal">
+          <span class="tag tag--brand">Inventario y compras</span>
+          <h3>Sabe qué tienes y qué te falta</h3>
+          <p>El stock baja con cada venta y sube con cada compra. Kimi marca lo que está bajo el mínimo para que repongas a tiempo.</p>
+          <div class="shot"><img src="assets/inventario.webp" width="1600" height="1120" loading="lazy"
+            alt="Inventario de Kimi con stock, costo y valor por producto y un aviso de producto bajo el mínimo"></div>
         </article>
       </div>
-      <p class="plans-note">
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Todos los planes incluyen punto de venta, caja, inventario y uso sin internet.</span>
-        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>Empiezas con 14 días gratis, sin tarjeta.</span>
-      </p>
     </div>
   </section>
 
-  <!-- ═════════════ Descarga ═════════════ -->
-  <section class="band" id="descargar" aria-labelledby="h-descargar">
-    <div class="wrap">
-      <div class="dl">
-        <div>
-          <p class="eyebrow">Descarga</p>
-          <h2 id="h-descargar">Instala Kimi en la computadora de tu negocio</h2>
-          <p class="sub">Toma un par de minutos. Pruébalo 14 días gratis y, cuando quieras seguir, ingresas tu clave de licencia, también sin internet.</p>
-          <div class="cta">
-            <a class="btn btn--primary" data-download href="#descargar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
-              Descargar para Windows</a>
-            <a class="btn btn--ghost" data-demo href="#descargar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              Probar la demo · 20 minutos</a>
-            <p class="demo-note" aria-live="polite"></p>
-          </div>
-          <details class="smart">
-            <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>¿Windows muestra «Windows protegió su PC»?</summary>
-            <p>Es normal en programas nuevos sin firma comercial. Haz clic en <b>Más información</b> y luego en <b>Ejecutar de todas formas</b>.</p>
-            <p>Si pregunta por el firewall, permite las <b>redes privadas</b> para que se conecten tus celulares.</p>
-          </details>
-        </div>
-
-        <aside class="spec" aria-label="Requisitos">
-          <p class="t">Kimi para Windows</p>
-          <dl>
-            <div><dt>Sistema</dt><dd>Windows 10 y 11 (64 bits)</dd></div>
-            <div><dt>Tamaño</dt><dd>unos 36 MB</dd></div>
-            <div><dt>Versión</dt><dd>v<span id="version">1.1.0</span></dd></div>
-            <div><dt>Prueba</dt><dd>14 días gratis</dd></div>
-            <div><dt>Tarjeta</dt><dd>no se pide</dd></div>
-          </dl>
-          <p class="mobile">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg>
-            <span><strong>¿Celular o tableta? No descargas nada.</strong> Después de instalar en la computadora, abre <strong>Mi cuenta → Usar desde el celular</strong> y escanea el código QR.</span>
-          </p>
-        </aside>
+  <section class="section section--soft" id="celular">
+    <div class="wrap phone-sec">
+      <div class="reveal">
+        <p class="kicker">Celulares y tabletas</p>
+        <h2 class="title">Tu equipo vende desde el celular</h2>
+        <p class="sub">Android o iPhone, sin descargar otra app. Todo lo que venden se guarda en la computadora del local.</p>
+        <ol class="steps-mini">
+          <li><div><b>En la computadora</b><span>Abre «Mi cuenta → Usar desde el celular o la tableta».</span></div></li>
+          <li><div><b>Escanea el código QR</b><span>Con la cámara del celular, conectado al mismo WiFi del local.</span></div></li>
+          <li><div><b>Agrégala a tu pantalla de inicio</b><span>Y úsala como una app más: vender, cobrar y consultar.</span></div></li>
+        </ol>
       </div>
+      <div class="phone reveal">
+        <video id="phone-video" src="assets/kimi-celular.mp4" poster="assets/kimi-celular-poster.webp" width="390" height="844"
+          autoplay muted loop playsinline preload="metadata"
+          aria-label="Grabación real de Kimi en un celular: venta de fierro y clavos cobrada con Plin"></video>
+      </div>
+    </div>
+  </section>
 
-      <ol class="start" aria-label="Empieza en tres pasos">
-        <li><div><h3>Descarga e instala</h3><p>En la computadora del negocio, con Windows 10 u 11.</p></div></li>
-        <li><div><h3>Registra tu empresa</h3><p>RUC, dirección fiscal, certificado digital y usuario SOL secundario. Empiezas en pruebas con SUNAT y pasas a producción cuando estés listo.</p></div></li>
-        <li><div><h3>Úsalo 14 días gratis</h3><p>Cuando quieras seguir, elige tu plan y te enviamos tu clave de licencia.</p></div></li>
+  <section class="section" id="empezar">
+    <div class="wrap">
+      <div class="center">
+        <p class="kicker">Cómo empezar</p>
+        <h2 class="title">Listo para vender hoy mismo</h2>
+        <p class="sub">No necesitas saber de sistemas. Si sabes usar el celular, sabes usar Kimi.</p>
+      </div>
+      <ol class="start">
+        <li class="reveal"><h3>Descarga e instala</h3><p>En la computadora de tu negocio, con Windows 10 u 11. Toma un par de minutos.</p></li>
+        <li class="reveal"><h3>Registra tu empresa</h3><p>Tu RUC, tu dirección fiscal y tus productos. Puedes empezar en modo de pruebas con SUNAT.</p></li>
+        <li class="reveal"><h3>Conecta SUNAT</h3><p>Sube tu certificado digital y tu usuario SOL secundario. La app te guía paso a paso.</p></li>
+        <li class="reveal"><h3>Vende y factura</h3><p>Abre la caja y empieza. Para seguir después de los 14 días, te enviamos tu licencia.</p></li>
       </ol>
     </div>
   </section>
 
-  <!-- ═════════════ Preguntas ═════════════ -->
-  <section class="band alt" id="preguntas" aria-labelledby="h-preguntas">
-    <div class="wrap faq">
-      <div class="head">
-        <p class="eyebrow">Preguntas frecuentes</p>
-        <h2 id="h-preguntas">Lo que nos preguntan</h2>
-        <div class="help-note">
-          <p class="help" id="faq-help">¿Otra duda? Lo más rápido es probarlo: <strong>14 días gratis, sin tarjeta</strong>.</p>
-          <a class="btn btn--ghost btn-small" data-download href="#descargar">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
-            Descargar para Windows</a>
+  <section class="section section--soft" id="planes">
+    <div class="wrap center">
+      <p class="kicker">Planes</p>
+      <h2 class="title">Precios claros, en soles</h2>
+      <p class="sub">Empieza con 14 días gratis. Luego eliges tu plan; el pago anual trae 2 meses de regalo.</p>
+      <div class="billing-switch" role="group" aria-label="Forma de pago">
+        <button type="button" data-cycle="month" aria-pressed="true">Mensual</button>
+        <button type="button" data-cycle="year" aria-pressed="false">Anual<em>2 meses gratis</em></button>
+      </div>
+      <div class="plans">
+        <article class="plan reveal">
+          <h3>Básico</h3>
+          <p class="for">Para empezar: una tienda con un local.</p>
+          <p class="price"><b data-m="49" data-y="490">S/ 49</b><span data-unit>al mes</span></p>
+          <p class="price-note" data-note-y="Equivale a S/ 40.83 al mes"></p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>500 comprobantes al mes</li>
+            <li><svg><use href="#i-check"/></svg>2 usuarios</li>
+            <li><svg><use href="#i-check"/></svg>1 establecimiento</li>
+            <li><svg><use href="#i-check"/></svg>Punto de venta y caja</li>
+          </ul>
+          <a class="btn btn--ghost" href="#descargar">Empezar gratis</a>
+        </article>
+        <article class="plan plan--top reveal">
+          <h3>Profesional</h3>
+          <p class="for">Para negocios en crecimiento con caja e inventario.</p>
+          <p class="price"><b data-m="99" data-y="990">S/ 99</b><span data-unit>al mes</span></p>
+          <p class="price-note" data-note-y="Equivale a S/ 82.50 al mes"></p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>3 000 comprobantes al mes</li>
+            <li><svg><use href="#i-check"/></svg>5 usuarios</li>
+            <li><svg><use href="#i-check"/></svg>2 establecimientos</li>
+            <li><svg><use href="#i-check"/></svg>Inventario, compras y cobranzas</li>
+          </ul>
+          <a class="btn btn--primary" href="#descargar">Empezar gratis</a>
+        </article>
+        <article class="plan reveal">
+          <h3>Empresarial</h3>
+          <p class="for">Varias sucursales y mucho movimiento, sin límite.</p>
+          <p class="price"><b data-m="199" data-y="1990">S/ 199</b><span data-unit>al mes</span></p>
+          <p class="price-note" data-note-y="Equivale a S/ 165.83 al mes"></p>
+          <ul>
+            <li><svg><use href="#i-check"/></svg>Comprobantes ilimitados</li>
+            <li><svg><use href="#i-check"/></svg>20 usuarios</li>
+            <li><svg><use href="#i-check"/></svg>10 establecimientos</li>
+            <li><svg><use href="#i-check"/></svg>Todo lo del plan Profesional</li>
+          </ul>
+          <a class="btn btn--ghost" href="#descargar">Empezar gratis</a>
+        </article>
+      </div>
+      <p class="plans-foot">Todos los planes incluyen facturación SUNAT completa, uso sin internet y acceso desde celulares.</p>
+    </div>
+  </section>
+
+  <section class="section" id="descargar">
+    <div class="wrap">
+      <div class="download reveal">
+        <div class="download__main">
+          <p class="kicker">Descarga</p>
+          <h2>Instala Kimi y pruébalo 14 días gratis</h2>
+          <p>Sin tarjeta y sin compromiso. Tus datos se guardan en tu computadora desde el primer día.</p>
+          <div class="cta">
+            <a class="btn btn--primary" data-download href="#"><svg><use href="#i-down"/></svg>Descargar para Windows</a>
+            <a class="btn btn--ghost" data-demo href="#"><svg><use href="#i-play"/></svg>Probar la demo · 20 min</a>
+          </div>
+          <p class="demo-note" data-demo-note hidden role="status">La demo en línea se habilita muy pronto. Mientras tanto, descarga Kimi y pruébalo 14 días gratis con tu negocio.</p>
+          <details class="smartscreen">
+            <summary>¿Windows muestra un aviso al instalar?</summary>
+            <p>Si aparece «Windows protegió su PC», es normal en programas nuevos sin firma comercial: haz clic en <b>Más información</b> y luego en <b>Ejecutar de todas formas</b>.
+              Si pregunta por el firewall, permite las <b>redes privadas</b> para que se conecten tus celulares.</p>
+          </details>
+        </div>
+        <div class="specs">
+          <dl>
+            <div><dt>Sistema</dt><dd>Windows 10 u 11 (64 bits)</dd></div>
+            <div><dt>Versión</dt><dd data-version>1.1.0</dd></div>
+            <div><dt>Tamaño</dt><dd>36 MB</dd></div>
+            <div><dt>Prueba</dt><dd>14 días gratis</dd></div>
+            <div><dt>Celulares y tabletas</dt><dd>No descargan nada</dd></div>
+          </dl>
         </div>
       </div>
-      <div class="qa">
-        <details><summary>¿Necesito internet?</summary>
-          <p>Para vender y emitir, no. Para que SUNAT reciba tus comprobantes, sí: Kimi los envía solo cuando vuelve la conexión.
-            Conéctate al menos una vez al día; SUNAT da pocos días de plazo para enviarlos y Kimi te avisa si alguno está por vencer.</p></details>
-        <details><summary>¿Dónde quedan mis datos? ¿Y si se malogra la computadora?</summary>
-          <p>En tu computadora, cifrados. Te recomendamos guardar copias de seguridad; la copia automática a tu Google Drive u OneDrive llega en la próxima versión.</p></details>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="preguntas">
+    <div class="wrap faq">
+      <div>
+        <p class="kicker">Preguntas frecuentes</p>
+        <h2 class="title">Lo que nos preguntan</h2>
+        <p class="sub" id="contact-line">¿Tienes otra duda? Descarga Kimi y pruébalo: 14 días gratis, sin tarjeta.</p>
+      </div>
+      <div>
+        <details><summary>¿Necesito internet para usar Kimi?</summary>
+          <p>Para vender y emitir, no. Para que SUNAT reciba tus comprobantes, sí: Kimi los envía solo cuando vuelve la conexión. Conéctate al menos una vez al día, porque SUNAT da pocos días de plazo; si alguno está por vencer, la app te avisa.</p></details>
+        <details><summary>¿Dónde se guardan mis datos?</summary>
+          <p>En tu computadora, cifrados. No pasan por servidores de terceros: tu certificado digital y tu clave SOL solo los usa Kimi en tu equipo. Te recomendamos guardar copias de seguridad.</p></details>
         <details><summary>¿Puedo usarlo desde varios celulares a la vez?</summary>
-          <p>Sí. Todos los celulares y tabletas conectados al WiFi del local usan la misma información, guardada en la computadora principal, que debe estar encendida.</p></details>
+          <p>Sí. Todos los celulares y tabletas conectados al WiFi del local usan la misma información, guardada en la computadora principal, que debe estar encendida con Kimi abierto.</p></details>
         <details><summary>¿Qué necesito de SUNAT?</summary>
-          <p>Tu certificado digital (archivo .pfx o .p12) y un usuario SOL secundario con permiso de emisión electrónica. Puedes empezar en el ambiente de pruebas mientras los consigues.</p></details>
+          <p>Tu certificado digital (archivo .pfx o .p12) y un usuario SOL secundario con permiso de emisión electrónica. Mientras los consigues puedes practicar en el modo de pruebas.</p></details>
         <details><summary>¿Qué pasa si se vence mi licencia?</summary>
-          <p>Tienes 7 días para renovarla sin perder la emisión. Después puedes seguir consultando y descargando todo; solo se detiene la emisión hasta que ingreses tu nueva clave. Nunca se borran tus datos.</p></details>
+          <p>Tienes 7 días para renovarla sin dejar de emitir. Después puedes seguir consultando y descargando todo; solo se detiene la emisión hasta que ingreses tu nueva clave. Nunca se borran tus datos.</p></details>
       </div>
     </div>
   </section>
@@ -1048,176 +534,85 @@ footer nav a:hover, #contact a:hover { color: var(--accent-ink); text-decoration
 
 <footer>
   <div class="wrap">
-    <a class="brand" href="#inicio" aria-label="Kimi, volver arriba"><img src="favicon.svg" alt="" width="26" height="26"><span class="wordmark">Kimi<i>.</i></span></a>
-    <span>© <span id="year">2026</span> Kimi · Facturación electrónica para el Perú · <span class="mono">v<span data-version>1.1.0</span></span></span>
+    <a class="logo" href="#"><img src="favicon.svg" alt="" width="26" height="26">Kimi</a>
     <nav aria-label="Pie de página">
-      <a href="#como-se-usa">Cómo se usa</a>
-      <a href="#planes">Planes</a>
-      <a href="#descargar">Descargar</a>
+      <a href="#funciones">Funciones</a><a href="#planes">Planes</a><a href="#descargar">Descargar</a><a href="#preguntas">Preguntas</a>
+      <a id="wa-link" hidden target="_blank" rel="noopener">WhatsApp</a>
     </nav>
-    <span id="contact"></span>
+    <span>© <span id="year">2026</span> Kimi · Facturación electrónica para el Perú · v<span data-version>1.1.0</span></span>
   </div>
 </footer>
 
 <script>
-  // ── Configuración de la página: edita estas tres líneas ──────────────────────
+  // Configuración de la página
   const DOWNLOAD_URL = "https://github.com/rcesarvillalobosp-sys/kimi/releases/latest/download/Kimi-Windows.exe";
   const DEMO_URL = "";   // dirección de la demo en línea (cuando exista el servidor)
   const WHATSAPP = "";   // p. ej. "51999999999"
-  const VERSION = "1.1.0"; // versión del instalador que se muestra en la página
-  // ─────────────────────────────────────────────────────────────────────────────
+  const VERSION = "1.1.0";
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll("[data-download]").forEach((a) => { a.href = DOWNLOAD_URL; });
+  document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = VERSION; });
   document.getElementById("year").textContent = new Date().getFullYear();
-  document.querySelectorAll("#version, [data-version]").forEach(el => { el.textContent = VERSION; });
 
-  // Descargas
-  document.querySelectorAll("[data-download]").forEach(a => { a.href = DOWNLOAD_URL; });
-
-  // Demo: siempre visible. Sin DEMO_URL, muestra un aviso amable en lugar de navegar.
-  document.querySelectorAll("[data-demo]").forEach(a => {
+  // Demo: abre la demo en línea o explica que llega pronto.
+  document.querySelectorAll("[data-demo]").forEach((a) => {
     if (DEMO_URL) { a.href = DEMO_URL; return; }
-    a.setAttribute("role", "button");
-    a.addEventListener("click", e => {
+    a.addEventListener("click", (e) => {
       e.preventDefault();
-      const note = a.parentElement.querySelector(".demo-note");
-      note.textContent = "";
-      requestAnimationFrame(() => {
-        note.textContent = "La demo en línea se habilita muy pronto. Mientras tanto, descarga Kimi y pruébalo 14 días gratis.";
-      });
+      const note = a.closest(".cta").nextElementSibling;
+      if (note && note.matches("[data-demo-note]")) note.hidden = false;
     });
   });
 
-  // WhatsApp (opcional)
   if (WHATSAPP) {
-    const a = document.createElement("a");
-    a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Hola, quiero información de Kimi.");
-    a.rel = "noopener"; a.target = "_blank";
-    a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.4z"/></svg>Escríbenos por WhatsApp';
-    document.getElementById("contact").append(a);
-    const help = document.getElementById("faq-help");
-    help.append(" O ");
-    const b = a.cloneNode(true); b.textContent = "escríbenos por WhatsApp"; help.append(b, ".");
+    const wa = document.getElementById("wa-link");
+    wa.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Hola, quiero información de Kimi.");
+    wa.hidden = false;
+    document.getElementById("contact-line").innerHTML = '¿Tienes otra duda? <a href="' + wa.href + '" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>.';
   }
 
-  // Comprobante de la portada: «Emitida sin señal» → «Enviado a SUNAT ✓» + sello
-  const receipt = document.getElementById("hero-receipt");
-  const figure = receipt.parentElement;
-  function playReceipt() {
-    if (reduceMotion) return;
-    [receipt, figure].forEach(el => el.classList.remove("play"));
-    void receipt.offsetWidth;
-    receipt.classList.add("play"); figure.classList.add("play");
-  }
-  if (!reduceMotion) {
-    // Empieza cuando el comprobante está a la vista (en celular queda debajo del titular)
-    if ("IntersectionObserver" in window) {
-      receipt.classList.add("play"); figure.classList.add("play");
-      [receipt, figure].forEach(el => el.style.animationPlayState = "paused");
-      const pause = on => figure.querySelectorAll(".pill-off, .pill-on, .log-sending, .log-2, .stamp").forEach(el => el.style.animationPlayState = on ? "paused" : "");
-      pause(true);
-      const io = new IntersectionObserver(entries => {
-        if (entries.some(e => e.isIntersecting)) {
-          io.disconnect(); pause(false); receipt.style.animationPlayState = "";
-        }
-      }, { threshold: .6 });
-      io.observe(receipt);
-    } else {
-      playReceipt();
-    }
-    const replay = document.getElementById("replay");
-    replay.hidden = false;
-    replay.addEventListener("click", playReceipt);
-  }
+  // Cabecera con borde al bajar
+  const header = document.getElementById("top");
+  addEventListener("scroll", () => header.classList.toggle("is-scrolled", scrollY > 8), { passive: true });
 
-  // Pestañas «Cómo se usa» (ARIA tabs, flechas, Inicio/Fin)
-  const tabs = Array.from(document.querySelectorAll('#tablist [role="tab"]'));
-  const tablist = document.getElementById("tablist");
-  const vertical = () => window.matchMedia("(min-width: 981px)").matches;
-  function selectTab(tab, focus) {
-    tabs.forEach(t => {
-      const on = t === tab;
-      t.setAttribute("aria-selected", on);
-      t.tabIndex = on ? 0 : -1;
-      const p = document.getElementById(t.getAttribute("aria-controls"));
-      p.hidden = !on; p.classList.toggle("is-active", on);
-    });
-    tablist.setAttribute("aria-orientation", vertical() ? "vertical" : "horizontal");
-    if (focus) { tab.focus(); }
-    tab.scrollIntoView({ block: "nearest", inline: "nearest" });
-    if (tab.id === "t-offline") startOffline(); else stopOffline();
-  }
-  tabs.forEach((t, i) => {
-    t.addEventListener("click", () => selectTab(t, false));
-    t.addEventListener("keydown", e => {
-      let n = null;
-      if (e.key === "ArrowDown" || e.key === "ArrowRight") n = (i + 1) % tabs.length;
-      else if (e.key === "ArrowUp" || e.key === "ArrowLeft") n = (i - 1 + tabs.length) % tabs.length;
-      else if (e.key === "Home") n = 0;
-      else if (e.key === "End") n = tabs.length - 1;
-      if (n !== null) { e.preventDefault(); selectTab(tabs[n], true); }
-    });
-  });
-  tablist.setAttribute("aria-orientation", vertical() ? "vertical" : "horizontal");
-  const rail = document.getElementById("tabs-rail");
-  const railEnd = () => rail.classList.toggle("at-end", tablist.scrollLeft + tablist.clientWidth >= tablist.scrollWidth - 4);
-  tablist.addEventListener("scroll", railEnd, { passive: true });
-  window.addEventListener("resize", railEnd); railEnd();
-
-  // Simulación «Sin internet»
-  const offScreen = document.getElementById("offline-screen");
-  const offNet = document.getElementById("offline-net");
-  const offStatus = document.getElementById("offline-status");
-  const toggleLabel = document.getElementById("net-toggle-label");
-  let offTimer = null;
-  function setOnline(on) {
-    offScreen.classList.toggle("online", on);
-    offNet.textContent = on ? "En línea" : "Sin conexión";
-    offNet.classList.toggle("off", !on);
-    offStatus.textContent = on ? "En línea, enviado a SUNAT" : "Sin conexión, 3 por enviar";
-    toggleLabel.textContent = on ? "Simular: se va la señal" : "Simular: vuelve la señal";
-  }
-  function startOffline() {
-    clearTimeout(offTimer); setOnline(false);
-    if (!reduceMotion) offTimer = setTimeout(() => setOnline(true), 2600);
-  }
-  function stopOffline() { clearTimeout(offTimer); }
-  document.getElementById("net-toggle").addEventListener("click", () => {
-    clearTimeout(offTimer); setOnline(!offScreen.classList.contains("online"));
-  });
-
-  // Código QR ilustrativo (decorativo, no es un QR real)
-  (function drawQR() {
-    const n = 25; let seed = 20601234567 % 2147483647; let d = "";
-    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-    const finder = (x, y, ox, oy) => {
-      const lx = x - ox, ly = y - oy;
-      if (lx < 0 || ly < 0 || lx > 7 || ly > 7) return null;
-      if (lx === 7 || ly === 7) return false;
-      return lx === 0 || lx === 6 || ly === 0 || ly === 6 || (lx >= 2 && lx <= 4 && ly >= 2 && ly <= 4);
+  // Videos: se reproducen solo a la vista y nunca solos si la persona prefiere menos movimiento.
+  const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const videos = [...document.querySelectorAll("video")];
+  if (calm) videos.forEach((v) => { v.pause(); v.controls = true; });
+  const vio = new IntersectionObserver((entries) => entries.forEach(({ target, isIntersecting }) => {
+    if (calm || target.dataset.paused === "1") return;
+    if (isIntersecting) { target.preload = "auto"; target.play().catch(() => {}); } else target.pause();
+  }), { threshold: 0.35 });
+  videos.forEach((v) => vio.observe(v));
+  document.querySelectorAll("[data-video-toggle]").forEach((btn) => {
+    const v = document.getElementById(btn.dataset.videoToggle);
+    const sync = () => {
+      btn.querySelector("[data-icon-pause]").hidden = v.paused;
+      btn.querySelector("[data-icon-play]").hidden = !v.paused;
+      btn.setAttribute("aria-label", v.paused ? "Reproducir el video" : "Pausar el video");
     };
-    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) {
-      let v = finder(x, y, 0, 0); if (v === null) v = finder(n - 1 - x, y, 0, 0); if (v === null) v = finder(x, n - 1 - y, 0, 0);
-      if (v === null) v = rnd() > .5;
-      if (v) d += "M" + x + " " + y + "h1v1h-1z";
-    }
-    document.getElementById("qr").innerHTML = '<svg viewBox="-2 -2 ' + (n + 4) + ' ' + (n + 4) + '" shape-rendering="crispEdges" aria-hidden="true"><path d="' + d + '" fill="#1a2232"/></svg>';
-  })();
+    btn.addEventListener("click", () => { if (v.paused) { v.dataset.paused = "0"; v.play(); } else { v.dataset.paused = "1"; v.pause(); } });
+    v.addEventListener("play", sync); v.addEventListener("pause", sync); sync();
+  });
 
-  // Planes: mensual / anual (anual = 10 meses, 2 gratis)
-  const cycleBtns = document.querySelectorAll(".billing button");
-  function setCycle(c) {
-    cycleBtns.forEach(b => b.setAttribute("aria-pressed", b.dataset.cycle === c));
-    document.querySelectorAll(".plan").forEach(p => {
-      const m = Number(p.dataset.m);
-      const fmt = v => String(v).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-      p.querySelector(".amt").textContent = c === "y" ? fmt(m * 10) : m;
-      p.querySelector(".per").textContent = c === "y" ? "al año" : "al mes";
-      p.querySelector(".eq").textContent = c === "y" ? "Ahorras S/ " + fmt(m * 2) + " · antes S/ " + fmt(m * 12) : "o S/ " + fmt(m * 10) + " al año";
+  // Planes: mensual o anual
+  document.querySelectorAll("[data-cycle]").forEach((b) => b.addEventListener("click", () => {
+    const year = b.dataset.cycle === "year";
+    document.querySelectorAll("[data-cycle]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    document.querySelectorAll(".plan").forEach((plan) => {
+      const price = plan.querySelector("[data-m]");
+      price.textContent = "S/ " + Number(year ? price.dataset.y : price.dataset.m).toLocaleString("es-PE");
+      plan.querySelector("[data-unit]").textContent = year ? "al año" : "al mes";
+      const note = plan.querySelector(".price-note");
+      note.textContent = year ? note.dataset.noteY : "";
     });
-  }
-  cycleBtns.forEach(b => b.addEventListener("click", () => setCycle(b.dataset.cycle)));
-  setCycle("m");
+  }));
+
+  // Aparición suave al bajar
+  const rio = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add("is-in"); rio.unobserve(e.target); }
+  }), { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach((el) => rio.observe(el));
 </script>
 </body>
 </html>
