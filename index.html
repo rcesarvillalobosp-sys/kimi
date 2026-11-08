@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="es-PE">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FactuPerú · Facturación electrónica SUNAT en tu computadora</title>
+<meta name="description" content="Emite facturas y boletas electrónicas SUNAT, vende con punto de venta y controla tu caja e inventario. Se instala en tu computadora, funciona sin internet y tus datos son tuyos.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f3eee3; --paper-2: #ebe4d5; --surface: #fffdf8; --ink: #1a2232; --ink-2: #434d63; --ink-3: #6b7489;
+  --rule: #ddd3c1; --accent: #c2410c; --accent-hover: #9a3412; --accent-soft: #fbe7da; --ok: #15803d;
+  --radius: 10px; --shadow: 0 1px 2px rgba(26,34,50,.06), 0 8px 24px rgba(26,34,50,.07);
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #12151c; --paper-2: #181c25; --surface: #1a1e27; --ink: #ede7da; --ink-2: #bdb6a8; --ink-3: #8f897d;
+    --rule: #2c3240; --accent: #f97316; --accent-hover: #fb923c; --accent-soft: #3a2316; --ok: #4ade80;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); }
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 var(--body); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); }
+h1, h2, h3 { font-family: var(--display); line-height: 1.12; letter-spacing: -.015em; margin: 0; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.eyebrow { font: 500 .78rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+.btn { display: inline-flex; align-items: center; gap: 10px; min-height: 48px; padding: 0 22px; border-radius: 999px; font: 600 1rem var(--body);
+  text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: background .15s, transform .15s; }
+.btn:hover { transform: translateY(-1px); }
+.btn--primary { background: var(--accent); color: #fff; }
+.btn--primary:hover { background: var(--accent-hover); }
+.btn--ghost { border-color: var(--rule); color: var(--ink); background: var(--surface); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.muted { color: var(--ink-2); }
+.small { font-size: .9rem; }
+
+/* Cabecera */
+.top { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 1.25rem var(--display); color: var(--ink); text-decoration: none; }
+.brand b { font-weight: 700; } .brand span { color: var(--accent); }
+.brand img { width: 28px; height: 28px; }
+.top nav { display: flex; gap: 22px; align-items: center; }
+.top nav a { color: var(--ink-2); text-decoration: none; font-weight: 500; font-size: .95rem; }
+.top nav a:hover { color: var(--ink); }
+.top nav .btn { min-height: 40px; padding: 0 16px; font-size: .92rem; color: #fff; }
+@media (max-width: 760px) { .top nav a:not(.btn) { display: none; } }
+
+/* Portada */
+.hero { padding: 72px 0 56px; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+.hero h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p.lead { font-size: 1.15rem; color: var(--ink-2); margin: 20px 0 30px; max-width: 34em; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 26px 0 0; padding: 0; list-style: none; color: var(--ink-2); font-size: .93rem; }
+.facts li::before { content: "✓"; color: var(--ok); font-weight: 700; margin-right: 7px; }
+@media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; } .receipt-wrap { display: none; } }
+
+/* Recibo ilustrado */
+.receipt-wrap { position: relative; transform: rotate(1.5deg); }
+.receipt { background: var(--surface); border-radius: 6px 6px 0 0; padding: 30px 26px 88px; box-shadow: var(--shadow); font: 500 .86rem/1.5 var(--mono);
+  position: relative; --tooth: 12px;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--tooth) 100%;
+          mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--tooth) 100%; }
+.receipt .shop { font-weight: 700; text-align: center; margin: 0; }
+.receipt .ruc { text-align: center; color: var(--ink-3); margin: 0 0 14px; }
+.receipt .box { border: 1.5px solid var(--ink); text-align: center; padding: 8px; margin-bottom: 14px; }
+.receipt .box strong { display: block; font-size: 1.05rem; }
+.receipt dl { margin: 0; } .receipt dl div { display: flex; justify-content: space-between; gap: 12px; }
+.receipt dt, .receipt dd { margin: 0; }
+.receipt .total { border-top: 1.5px dashed var(--rule); margin-top: 12px; padding-top: 10px; font-weight: 700; font-size: 1rem; }
+.stamp { position: absolute; right: 26px; bottom: 30px; transform: rotate(-12deg); border: 2.5px solid var(--ok); color: var(--ok); border-radius: 6px;
+  padding: 2px 12px; font: 700 1rem var(--mono); letter-spacing: .1em; opacity: .9; }
+.badge-offline { position: absolute; z-index: 1; left: -14px; top: -16px; transform: rotate(-4deg); background: var(--ink); color: var(--paper); border-radius: 999px;
+  padding: 6px 14px; font: 600 .78rem var(--body); box-shadow: var(--shadow); }
+
+/* Secciones */
+section.band { padding: 72px 0; border-top: 1px solid var(--rule); }
+section.band.alt { background: var(--paper-2); }
+.head { max-width: 46em; margin-bottom: 40px; }
+.head h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+.head p { color: var(--ink-2); margin: 14px 0 0; font-size: 1.05rem; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 880px) { .grid3 { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+.card h3 { font-size: 1.2rem; margin: 12px 0 8px; }
+.card p { margin: 0; color: var(--ink-2); }
+.icon { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.icon svg { width: 22px; height: 22px; }
+.steps { counter-reset: s; display: grid; gap: 14px; padding: 0; margin: 0; list-style: none; }
+.steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+.steps li::before { content: counter(s); width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: #fff; font: 700 1.1rem var(--display); }
+.steps h3 { font-size: 1.1rem; margin: 8px 0 4px; } .steps p { margin: 0; color: var(--ink-2); }
+
+/* Planes */
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+@media (max-width: 880px) { .plans { grid-template-columns: 1fr; } }
+.plan.featured { border: 2px solid var(--accent); }
+.plan .price { font: 700 2.1rem var(--display); margin: 10px 0 2px; } .plan .price small { font: 500 .95rem var(--body); color: var(--ink-2); }
+.plan ul { margin: 14px 0 0; padding-left: 18px; color: var(--ink-2); }
+
+/* Descarga */
+.download { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+@media (max-width: 880px) { .download { grid-template-columns: 1fr; } }
+.dl-card { text-align: left; }
+.dl-card .btn { margin-top: 18px; }
+.req { font-size: .92rem; color: var(--ink-2); margin: 14px 0 0; }
+.warn { background: var(--accent-soft); border-radius: var(--radius); padding: 18px 20px; }
+.warn h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.warn ol { margin: 0; padding-left: 20px; } .warn li { margin: 4px 0; }
+kbd { font: 500 .85em var(--mono); background: var(--surface); border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px; }
+
+/* Preguntas */
+details { background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); padding: 0 20px; margin-bottom: 10px; }
+summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary::after { content: "+"; color: var(--accent); font: 700 1.3rem var(--display); }
+details[open] summary::after { content: "–"; }
+details p { margin: 0 0 16px; color: var(--ink-2); }
+
+footer { padding: 36px 0 48px; border-top: 1px solid var(--rule); color: var(--ink-3); font-size: .9rem; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#"><img src="icon.png" alt="" width="28" height="28"><b>Factu<span>Perú</span></b></a>
+    <nav aria-label="Principal">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#planes">Planes</a>
+      <a href="#preguntas">Preguntas</a>
+      <a class="btn btn--primary" href="#descargar">Descargar</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Facturación electrónica SUNAT</p>
+        <h1>Factura, vende y controla tu caja <em>aunque se vaya el internet</em>.</h1>
+        <p class="lead">FactuPerú se instala en la computadora de tu negocio. Tus datos se quedan contigo,
+          tus celulares y tabletas se conectan por el WiFi del local y los comprobantes llegan a SUNAT apenas vuelve la conexión.</p>
+        <div class="cta">
+          <a class="btn btn--primary" href="#descargar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
+            Descargar para Windows</a>
+          <a class="btn btn--ghost" id="demo-btn" href="#" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg>
+            Probar la demo en línea</a>
+        </div>
+        <ul class="facts">
+          <li>14 días gratis</li><li>Sin tarjeta</li><li>Facturas, boletas y notas</li><li>Punto de venta y caja</li>
+        </ul>
+      </div>
+      <div class="receipt-wrap" aria-hidden="true">
+      <span class="badge-offline">Emitida sin internet · enviada después</span>
+      <div class="receipt">
+        <p class="shop">BODEGA SANTA ROSA E.I.R.L.</p>
+        <p class="ruc">RUC 20601234567</p>
+        <div class="box">BOLETA DE VENTA ELECTRÓNICA<strong>B001-000482</strong></div>
+        <dl>
+          <div><dt>2 × Arroz Costeño 5 kg</dt><dd>52.00</dd></div>
+          <div><dt>6 × Leche Gloria 400 g</dt><dd>27.60</dd></div>
+          <div><dt>1 × Aceite Primor 1 L</dt><dd>11.90</dd></div>
+        </dl>
+        <dl class="total"><div><dt>TOTAL</dt><dd>S/ 91.50</dd></div></dl>
+        <span class="stamp">ACEPTADO</span>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="como-funciona">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Hecho para el negocio peruano</p>
+        <h2>Todo en tu computadora. Nada depende de un servidor ajeno.</h2>
+        <p>Sin mensualidades por almacenamiento en la nube y sin quedarte parado cuando falla la conexión.</p>
+      </div>
+      <div class="grid3">
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg></div>
+          <h3>Funciona sin internet</h3>
+          <p>Vende y emite igual. Los comprobantes quedan firmados y se envían solos a SUNAT cuando vuelve la conexión, dentro del plazo que da SUNAT.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></div>
+          <h3>Tus datos son tuyos</h3>
+          <p>Clientes, ventas, certificado digital y clave SOL se guardan cifrados en tu computadora. Nadie más los ve.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div>
+          <h3>Celulares y tabletas</h3>
+          <p>Tus vendedores usan FactuPerú desde el celular o la tableta (Android o iPhone) por el WiFi del local, sin instalar nada: escanean un código QR.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></div>
+          <h3>Facturación SUNAT completa</h3>
+          <p>Facturas, boletas, notas de crédito y débito, resúmenes diarios, bajas, detracciones y pagos al crédito.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg></div>
+          <h3>Punto de venta y caja</h3>
+          <p>Venta rápida con lector de códigos, ticket de 80 mm, apertura y cierre de caja, Yape, Plin y efectivo.</p>
+        </article>
+        <article class="card">
+          <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></div>
+          <h3>Inventario, compras y cobranzas</h3>
+          <p>Stock por almacén, compras a proveedores, cuentas por cobrar y por pagar, usuarios con permisos y registro de actividad.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">En tres pasos</p>
+        <h2>Empieza hoy</h2>
+      </div>
+      <ol class="steps">
+        <li><div><h3>Descarga e instala</h3><p>En la computadora de tu negocio (Windows 10 u 11). Toma un par de minutos.</p></div></li>
+        <li><div><h3>Registra tu empresa</h3><p>RUC, dirección fiscal, tu certificado digital y tu usuario SOL secundario. Empiezas en pruebas con SUNAT y pasas a producción cuando estés listo.</p></div></li>
+        <li><div><h3>Úsalo 14 días gratis</h3><p>Cuando quieras seguir, escríbenos y te enviamos tu clave de licencia. Se ingresa sin internet.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band alt" id="planes">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Precios claros</p>
+        <h2>Planes</h2>
+        <p>Pago mensual o anual (el anual trae 2 meses gratis). Precios en soles.</p>
+      </div>
+      <div class="plans">
+        <article class="card plan">
+          <h3>Básico</h3><p class="price">S/ 49 <small>al mes</small></p>
+          <p>Para empezar: un local y pocos comprobantes.</p>
+          <ul><li>300 comprobantes al mes</li><li>2 usuarios</li><li>1 establecimiento</li></ul>
+        </article>
+        <article class="card plan featured">
+          <h3>Profesional</h3><p class="price">S/ 99 <small>al mes</small></p>
+          <p>Para negocios en crecimiento con caja e inventario.</p>
+          <ul><li>2 000 comprobantes al mes</li><li>5 usuarios</li><li>2 establecimientos</li></ul>
+        </article>
+        <article class="card plan">
+          <h3>Empresarial</h3><p class="price">S/ 199 <small>al mes</small></p>
+          <p>Sin límite de comprobantes, varias sucursales.</p>
+          <ul><li>Comprobantes ilimitados</li><li>20 usuarios</li><li>10 establecimientos</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="descargar">
+    <div class="wrap">
+      <div class="head">
+        <p class="eyebrow">Descarga</p>
+        <h2>Instala FactuPerú en tu computadora</h2>
+      </div>
+      <div class="download">
+        <article class="card dl-card">
+          <h3>Windows 10 y 11 (64 bits)</h3>
+          <p class="muted">Versión <span id="version">1.0.0</span> · unos 36 MB · 14 días de prueba gratis.</p>
+          <a class="btn btn--primary" id="download-btn" href="https://github.com/rcesarvillalobosp-sys/factuperu/releases/latest/download/FactuPeru-Windows.exe">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14"/></svg>
+            Descargar para Windows</a>
+          <p class="req">¿Celular o tableta? No necesitas descargar nada: después de instalar en la computadora, abre
+            <strong>Mi cuenta → Usar desde el celular o la tableta</strong> y escanea el código QR.</p>
+        </article>
+        <div class="warn">
+          <h3>Si Windows muestra «Windows protegió su PC»</h3>
+          <p class="small">Es normal en programas nuevos que aún no tienen firma comercial. FactuPerú es seguro.</p>
+          <ol class="small">
+            <li>Haz clic en <strong>Más información</strong>.</li>
+            <li>Luego en <strong>Ejecutar de todas formas</strong>.</li>
+            <li>Si Windows pregunta por el firewall, permite las <strong>redes privadas</strong> (para que se conecten tus celulares).</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt" id="preguntas">
+    <div class="wrap">
+      <div class="head"><p class="eyebrow">Preguntas frecuentes</p><h2>Lo que nos preguntan</h2></div>
+      <details><summary>¿Necesito internet?</summary>
+        <p>Para vender y emitir, no. Para que SUNAT reciba tus comprobantes, sí: FactuPerú los envía solo cuando vuelve la conexión.
+          Conéctate al menos una vez al día; SUNAT da pocos días de plazo para enviarlos y la app te avisa si alguno está por vencer.</p></details>
+      <details><summary>¿Dónde quedan mis datos? ¿Y si se malogra la computadora?</summary>
+        <p>En tu computadora, cifrados. Te recomendamos guardar copias de seguridad; la copia automática a tu Google Drive u OneDrive llega en la próxima versión.</p></details>
+      <details><summary>¿Puedo usarlo desde varios celulares a la vez?</summary>
+        <p>Sí. Todos los celulares y tabletas conectados al WiFi del local usan la misma información, guardada en la computadora principal, que debe estar encendida.</p></details>
+      <details><summary>¿Qué necesito de SUNAT?</summary>
+        <p>Tu certificado digital (archivo .pfx o .p12) y un usuario SOL secundario con permiso de emisión electrónica. Puedes empezar en el ambiente de pruebas mientras los consigues.</p></details>
+      <details><summary>¿Qué pasa si se vence mi licencia?</summary>
+        <p>Tienes 7 días para renovarla sin perder la emisión. Después puedes seguir consultando y descargando todo; solo se detiene la emisión hasta que ingreses tu nueva clave. Nunca se borran tus datos.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> FactuPerú · Facturación electrónica para el Perú</span>
+    <span id="contact"></span>
+  </div>
+</footer>
+
+<script>
+  // Configuración de la página: complétala al tener el servidor de la demo y el WhatsApp comercial.
+  const DEMO_URL = "";        // p. ej. "https://demo.tudominio.pe/demo"
+  const WHATSAPP = "";        // p. ej. "51999999999"
+  document.getElementById("year").textContent = new Date().getFullYear();
+  if (DEMO_URL) { const b = document.getElementById("demo-btn"); b.href = DEMO_URL; b.hidden = false; }
+  if (WHATSAPP) {
+    const a = document.createElement("a");
+    a.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("Hola, quiero información de FactuPerú.");
+    a.textContent = "Escríbenos por WhatsApp"; a.rel = "noopener"; a.target = "_blank";
+    document.getElementById("contact").append(a);
+  }
+</script>
+</body>
+</html>
