@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kimi · Facturación electrónica SUNAT que no se cae</title>
-<meta name="description" content="Emite boletas y facturas SUNAT, cobra con Yape o Plin y controla tu caja e inventario desde tu computadora. Funciona sin internet. 14 días gratis.">
+<meta name="description" content="Emite boletas y facturas SUNAT, cobra con Yape o Plin y controla tu caja e inventario desde tu computadora. Funciona sin internet.">
 <meta property="og:title" content="Kimi · La facturación electrónica que no se cae">
 <meta property="og:description" content="Facturas, boletas, punto de venta, caja e inventario en tu computadora. Sigue funcionando aunque se vaya el internet.">
 <meta property="og:image" content="assets/kimi-en-uso-poster.webp">
@@ -142,6 +142,18 @@ section { scroll-margin-top: 72px; }
   .feature--flip .feature__text { order: 0; }
 }
 
+/* Tarjetas de funciones */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 56px; }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 28px; }
+.card h3 { font-size: 1.15rem; font-weight: 800; margin-top: 18px; }
+.card p { color: var(--ink-2); margin-top: 8px; font-size: .98rem; }
+.card .ico { background: var(--brand-soft); box-shadow: none; }
+.card--wide { grid-column: 1 / -1; display: flex; gap: 22px; align-items: flex-start; background: linear-gradient(135deg, #fff 0%, var(--brand-soft) 140%); }
+.card--wide h3 { margin-top: 0; font-size: 1.5rem; }
+.card--wide p { font-size: 1.05rem; max-width: 46rem; }
+@media (max-width: 960px) { .cards { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .cards { grid-template-columns: 1fr; } .card--wide { flex-direction: column; } }
+
 /* Pareja de capturas */
 .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 88px; }
 .duo article { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 30px 30px 0; overflow: hidden; display: flex; flex-direction: column; }
@@ -273,12 +285,11 @@ footer a:hover { color: var(--ink); }
         Si se va el internet sigues vendiendo: Kimi envía todo a SUNAT cuando vuelve la señal.</p>
       <div class="cta">
         <a class="btn btn--primary" data-download href="#descargar"><svg><use href="#i-down"/></svg>Descargar para Windows</a>
-        <a class="btn btn--ghost" data-demo href="#"><svg><use href="#i-play"/></svg>Probar la demo <small>· 20 minutos</small></a>
+        <a class="btn btn--ghost" href="#funciones">Ver qué incluye</a>
       </div>
-      <p class="demo-note" data-demo-note hidden role="status">La demo en línea se habilita muy pronto. Mientras tanto, descarga Kimi y pruébalo 14 días gratis con tu negocio.</p>
       <ul class="trust">
-        <li><svg><use href="#i-check"/></svg>14 días gratis</li>
-        <li><svg><use href="#i-check"/></svg>Sin tarjeta</li>
+        <li><svg><use href="#i-check"/></svg>Funciona sin internet</li>
+        <li><svg><use href="#i-check"/></svg>Desde S/ 49 al mes</li>
         <li><svg><use href="#i-check"/></svg>Tus datos se quedan en tu computadora</li>
       </ul>
 
@@ -321,68 +332,50 @@ footer a:hover { color: var(--ink); }
       <div class="center">
         <p class="kicker">Funciones</p>
         <h2 class="title">Todo lo que tu negocio necesita, en una sola app</h2>
-        <p class="sub">Así se ve Kimi de verdad: estas pantallas son de una ferretería de ejemplo trabajando con la app.</p>
+        <p class="sub">Vender, facturar, cobrar y controlar tu negocio, desde la computadora del local.</p>
       </div>
-
-      <div class="feature features-start reveal">
-        <div class="feature__text">
-          <span class="tag tag--brand">Punto de venta</span>
-          <h3>Vende en segundos, cobra como prefiera tu cliente</h3>
-          <p>Escribe o escanea el producto, ajusta la cantidad y cobra. El IGV se calcula solo.</p>
-          <ul class="checks">
-            <li><svg><use href="#i-check"/></svg>Lector de código de barras y búsqueda por nombre</li>
-            <li><svg><use href="#i-check"/></svg>Efectivo, Yape, Plin, tarjeta o transferencia, con vuelto</li>
-            <li><svg><use href="#i-check"/></svg>Ticket de 80 mm o envío por WhatsApp</li>
-          </ul>
-        </div>
-        <div class="shot"><img src="assets/punto-de-venta.webp" width="1600" height="867" loading="lazy"
-          alt="Pantalla del punto de venta de Kimi con cemento, fierro, pintura y clavos en la venta, total S/ 231.80 y pago con Yape"></div>
-      </div>
-
-      <div class="feature feature--flip reveal">
-        <div class="feature__text">
-          <span class="tag tag--ok">Aceptado por SUNAT</span>
-          <h3>Facturas y boletas válidas, sin trámites</h3>
-          <p>Elige al cliente por su RUC o DNI, agrega los productos y emite. Ves al instante la respuesta de SUNAT.</p>
-          <ul class="checks">
-            <li><svg><use href="#i-check"/></svg>Facturas, boletas, notas de crédito y débito</li>
-            <li><svg><use href="#i-check"/></svg>Ventas al crédito con cuotas, detracciones y bajas</li>
-            <li><svg><use href="#i-check"/></svg>PDF, XML y constancia de SUNAT (CDR) guardados</li>
-          </ul>
-        </div>
-        <div class="shot"><img src="assets/factura-aceptada.webp" width="1600" height="1216" loading="lazy"
-          alt="Factura F001-2 de Kimi con el sello Aceptado, detalle de productos, IGV y total S/ 859.00"></div>
-      </div>
-
-      <div class="feature reveal">
-        <div class="feature__text">
-          <span class="tag tag--brand">Funciona sin internet</span>
-          <h3>¿Se fue la señal? Tú sigues vendiendo</h3>
-          <p>Kimi firma cada comprobante en tu computadora y lo deja listo. Cuando vuelve el internet, lo envía a SUNAT por su cuenta, dentro del plazo. Si alguno está por vencer, te avisa.</p>
-          <div class="offline" aria-label="Estados de un comprobante">
-            <span class="state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0M8.5 16.4a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg>Firmado, por enviar</span>
-            <span class="arrow" aria-hidden="true">→</span>
-            <span class="state state--ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Aceptado por SUNAT</span>
+      <div class="cards">
+        <article class="card card--wide reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.9a10 10 0 0 1 14 0M8.5 16.4a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg></span>
+          <div>
+            <h3>¿Se fue la señal? Tú sigues vendiendo</h3>
+            <p>Kimi firma cada comprobante en tu computadora y lo deja listo. Cuando vuelve el internet, lo envía a SUNAT por su cuenta, dentro del plazo. Si alguno está por vencer, te avisa.</p>
+            <div class="offline" aria-label="Estados de un comprobante">
+              <span class="state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M2 8.8a15 15 0 0 1 20 0M8.5 16.4a5 5 0 0 1 7 0"/><path d="M3 3l18 18"/></svg>Firmado, por enviar</span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="state state--ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Aceptado por SUNAT</span>
+            </div>
           </div>
-        </div>
-        <div class="shot"><img src="assets/comprobantes.webp" width="1600" height="1216" loading="lazy"
-          alt="Lista de comprobantes de Kimi, todos con el estado Aceptado"></div>
-      </div>
-
-      <div class="duo">
-        <article class="reveal">
-          <span class="tag tag--brand">Caja</span>
-          <h3>Abre y cierra la caja sin descuadres</h3>
-          <p>Fondo inicial, ventas por medio de pago, ingresos y egresos. Al cerrar, Kimi te dice cuánto efectivo debe haber.</p>
-          <div class="shot"><img src="assets/caja.webp" width="1600" height="1120" loading="lazy"
-            alt="Pantalla de caja de Kimi con fondo inicial S/ 200, ventas del turno y efectivo esperado"></div>
         </article>
-        <article class="reveal">
-          <span class="tag tag--brand">Inventario y compras</span>
-          <h3>Sabe qué tienes y qué te falta</h3>
-          <p>El stock baja con cada venta y sube con cada compra. Kimi marca lo que está bajo el mínimo para que repongas a tiempo.</p>
-          <div class="shot"><img src="assets/inventario.webp" width="1600" height="1120" loading="lazy"
-            alt="Inventario de Kimi con stock, costo y valor por producto y un aviso de producto bajo el mínimo"></div>
+        <article class="card reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 7H6"/></svg></span>
+          <h3>Punto de venta</h3>
+          <p>Escribe o escanea el producto y cobra con efectivo, Yape, Plin, tarjeta o transferencia. Ticket de 80 mm o por WhatsApp.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/></svg></span>
+          <h3>Facturación SUNAT</h3>
+          <p>Facturas, boletas y notas válidas. Ventas al crédito, detracciones y bajas. PDF, XML y CDR siempre a mano.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg></span>
+          <h3>Caja sin descuadres</h3>
+          <p>Abre con tu fondo, registra ingresos y egresos y, al cerrar, Kimi te dice cuánto efectivo debe haber.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></span>
+          <h3>Inventario y compras</h3>
+          <p>El stock baja con cada venta y sube con cada compra. Te avisa lo que está por agotarse.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+          <h3>Cuentas por cobrar y pagar</h3>
+          <p>Ventas al crédito con cuotas, abonos de clientes y pagos a proveedores, sin cuadernos.</p>
+        </article>
+        <article class="card reveal">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/></svg></span>
+          <h3>Usuarios y permisos</h3>
+          <p>Cada vendedor con su usuario y lo que puede hacer. Todo queda registrado.</p>
         </article>
       </div>
     </div>
@@ -417,9 +410,9 @@ footer a:hover { color: var(--ink); }
       </div>
       <ol class="start">
         <li class="reveal"><h3>Descarga e instala</h3><p>En la computadora de tu negocio, con Windows 10 u 11. Toma un par de minutos.</p></li>
-        <li class="reveal"><h3>Registra tu empresa</h3><p>Tu RUC, tu dirección fiscal y tus productos. Puedes empezar en modo de pruebas con SUNAT.</p></li>
-        <li class="reveal"><h3>Conecta SUNAT</h3><p>Sube tu certificado digital y tu usuario SOL secundario. La app te guía paso a paso.</p></li>
-        <li class="reveal"><h3>Vende y factura</h3><p>Abre la caja y empieza. Para seguir después de los 14 días, te enviamos tu licencia.</p></li>
+        <li class="reveal"><h3>Conoce la app</h3><p>Al abrirla puedes entrar a la demo sin registrarte: un negocio de ejemplo para probarlo todo.</p></li>
+        <li class="reveal"><h3>Activa tu empresa</h3><p>Con tu RUC y tu clave de licencia. Luego conectas SUNAT con tu certificado digital y tu usuario SOL.</p></li>
+        <li class="reveal"><h3>Vende y factura</h3><p>Abre la caja y empieza. Tus vendedores también pueden usarla desde el celular.</p></li>
       </ol>
     </div>
   </section>
@@ -428,7 +421,7 @@ footer a:hover { color: var(--ink); }
     <div class="wrap center">
       <p class="kicker">Planes</p>
       <h2 class="title">Precios claros, en soles</h2>
-      <p class="sub">Empieza con 14 días gratis. Luego eliges tu plan; el pago anual trae 2 meses de regalo.</p>
+      <p class="sub">Paga mes a mes o una vez al año: el pago anual trae 2 meses de regalo.</p>
       <div class="billing-switch" role="group" aria-label="Forma de pago">
         <button type="button" data-cycle="month" aria-pressed="true">Mensual</button>
         <button type="button" data-cycle="year" aria-pressed="false">Anual<em>2 meses gratis</em></button>
@@ -445,7 +438,7 @@ footer a:hover { color: var(--ink); }
             <li><svg><use href="#i-check"/></svg>1 establecimiento</li>
             <li><svg><use href="#i-check"/></svg>Punto de venta y caja</li>
           </ul>
-          <a class="btn btn--ghost" href="#descargar">Empezar gratis</a>
+          <a class="btn btn--ghost" href="#descargar">Elegir Básico</a>
         </article>
         <article class="plan plan--top reveal">
           <h3>Profesional</h3>
@@ -458,7 +451,7 @@ footer a:hover { color: var(--ink); }
             <li><svg><use href="#i-check"/></svg>2 establecimientos</li>
             <li><svg><use href="#i-check"/></svg>Inventario, compras y cobranzas</li>
           </ul>
-          <a class="btn btn--primary" href="#descargar">Empezar gratis</a>
+          <a class="btn btn--primary" href="#descargar">Elegir Profesional</a>
         </article>
         <article class="plan reveal">
           <h3>Empresarial</h3>
@@ -471,7 +464,7 @@ footer a:hover { color: var(--ink); }
             <li><svg><use href="#i-check"/></svg>10 establecimientos</li>
             <li><svg><use href="#i-check"/></svg>Todo lo del plan Profesional</li>
           </ul>
-          <a class="btn btn--ghost" href="#descargar">Empezar gratis</a>
+          <a class="btn btn--ghost" href="#descargar">Elegir Empresarial</a>
         </article>
       </div>
       <p class="plans-foot">Todos los planes incluyen facturación SUNAT completa, uso sin internet y acceso desde celulares.</p>
@@ -483,13 +476,11 @@ footer a:hover { color: var(--ink); }
       <div class="download reveal">
         <div class="download__main">
           <p class="kicker">Descarga</p>
-          <h2>Instala Kimi y pruébalo 14 días gratis</h2>
-          <p>Sin tarjeta y sin compromiso. Tus datos se guardan en tu computadora desde el primer día.</p>
+          <h2>Instala Kimi en la computadora de tu negocio</h2>
+          <p>Al abrirla puedes entrar a la demo sin registrarte. Para tu empresa, actívala con la clave de licencia de tu plan.</p>
           <div class="cta">
             <a class="btn btn--primary" data-download href="#"><svg><use href="#i-down"/></svg>Descargar para Windows</a>
-            <a class="btn btn--ghost" data-demo href="#"><svg><use href="#i-play"/></svg>Probar la demo · 20 min</a>
           </div>
-          <p class="demo-note" data-demo-note hidden role="status">La demo en línea se habilita muy pronto. Mientras tanto, descarga Kimi y pruébalo 14 días gratis con tu negocio.</p>
           <details class="smartscreen">
             <summary>¿Windows muestra un aviso al instalar?</summary>
             <p>Si aparece «Windows protegió su PC», es normal en programas nuevos sin firma comercial: haz clic en <b>Más información</b> y luego en <b>Ejecutar de todas formas</b>.
@@ -499,9 +490,9 @@ footer a:hover { color: var(--ink); }
         <div class="specs">
           <dl>
             <div><dt>Sistema</dt><dd>Windows 10 u 11 (64 bits)</dd></div>
-            <div><dt>Versión</dt><dd data-version>1.1.0</dd></div>
+            <div><dt>Versión</dt><dd data-version>1.2.0</dd></div>
             <div><dt>Tamaño</dt><dd>36 MB</dd></div>
-            <div><dt>Prueba</dt><dd>14 días gratis</dd></div>
+            <div><dt>Demo incluida</dt><dd>Sin registrarte</dd></div>
             <div><dt>Celulares y tabletas</dt><dd>No descargan nada</dd></div>
           </dl>
         </div>
@@ -514,7 +505,7 @@ footer a:hover { color: var(--ink); }
       <div>
         <p class="kicker">Preguntas frecuentes</p>
         <h2 class="title">Lo que nos preguntan</h2>
-        <p class="sub" id="contact-line">¿Tienes otra duda? Descarga Kimi y pruébalo: 14 días gratis, sin tarjeta.</p>
+        <p class="sub" id="contact-line">¿Tienes otra duda? Descarga Kimi y entra a la demo: no necesitas registrarte.</p>
       </div>
       <div>
         <details><summary>¿Necesito internet para usar Kimi?</summary>
@@ -539,30 +530,19 @@ footer a:hover { color: var(--ink); }
       <a href="#funciones">Funciones</a><a href="#planes">Planes</a><a href="#descargar">Descargar</a><a href="#preguntas">Preguntas</a>
       <a id="wa-link" hidden target="_blank" rel="noopener">WhatsApp</a>
     </nav>
-    <span>© <span id="year">2026</span> Kimi · Facturación electrónica para el Perú · v<span data-version>1.1.0</span></span>
+    <span>© <span id="year">2026</span> Kimi · Facturación electrónica para el Perú · v<span data-version>1.2.0</span></span>
   </div>
 </footer>
 
 <script>
   // Configuración de la página
   const DOWNLOAD_URL = "https://github.com/rcesarvillalobosp-sys/kimi/releases/latest/download/Kimi-Windows.exe";
-  const DEMO_URL = "";   // dirección de la demo en línea (cuando exista el servidor)
   const WHATSAPP = "";   // p. ej. "51999999999"
-  const VERSION = "1.1.0";
+  const VERSION = "1.2.0";
 
   document.querySelectorAll("[data-download]").forEach((a) => { a.href = DOWNLOAD_URL; });
   document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = VERSION; });
   document.getElementById("year").textContent = new Date().getFullYear();
-
-  // Demo: abre la demo en línea o explica que llega pronto.
-  document.querySelectorAll("[data-demo]").forEach((a) => {
-    if (DEMO_URL) { a.href = DEMO_URL; return; }
-    a.addEventListener("click", (e) => {
-      e.preventDefault();
-      const note = a.closest(".cta").nextElementSibling;
-      if (note && note.matches("[data-demo-note]")) note.hidden = false;
-    });
-  });
 
   if (WHATSAPP) {
     const wa = document.getElementById("wa-link");
