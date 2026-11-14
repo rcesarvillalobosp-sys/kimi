@@ -2,7 +2,7 @@
 // Configuración de la página
 const DOWNLOAD_URL = "https://github.com/rcesarvillalobosp-sys/kimi/releases/latest/download/Kimi-Windows.exe";
 const WHATSAPP = "";   // p. ej. "51999999999"
-const VERSION = "1.2.4";
+const VERSION = "1.2.5";
 
 document.querySelectorAll("[data-download]").forEach((a) => { a.href = DOWNLOAD_URL; });
 document.querySelectorAll("[data-version]").forEach((el) => { el.textContent = VERSION; });
